@@ -2,35 +2,30 @@ import {ServerConf} from "./Env";
 import {monitorRouter} from "./router/MonitorRouter";
 
 var dataObj: any;
-
 /**
  * WebServer
  */
 export class WebServer {
     serverConf: any;
     // socketIO: SocketIOSrv;
+    _onSetupCallback;
 
     constructor(callback?: any) {
-        this.initEnv(callback);
-        this.initGlobalFunc();
+        this._onSetupCallback = callback;
+        this.initEnv();
         this.initNedb();
         this.test();
     }
 
     test() {
-
-        // ExternalInfo.importHuiTi();
     }
 
     initNedb() {
         // initDB();
     }
 
-    initGlobalFunc() {
-        // this._path = _path;
-    }
 
-    initEnv(callback: any) {
+    initEnv(callback?: any) {
         var process = require("process");
         ServerConf.isDev = process.defaultApp || /[\\/]electron-prebuilt[\\/]/.test(process.execPath);
         console.log(process.execPath, ServerConf.isDev);
@@ -96,6 +91,8 @@ export class WebServer {
 
         app.listen(ServerConf.port, () => {
             this.initSocketIO();
+            if (this._onSetupCallback)
+                this._onSetupCallback();
             // this.initRtmpServer();
             //and... we're live
             console.log("server on:  ws port:");
@@ -106,5 +103,5 @@ export class WebServer {
         // this.socketIO = new SocketIOSrv();
     }
 }
-export var serverConf = ServerConf;
-export var webServer = new WebServer();
+// export var serverConf = ServerConf;
+// export var webServer = new WebServer();

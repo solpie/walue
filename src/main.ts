@@ -1,49 +1,20 @@
+import {WebServer} from "./Server";
+
 const {app, BrowserWindow, ipcMain} = require('electron');
+// if (process.platform == 'win32')
+//     process.env['VLC_PLUGIN_PATH'] = require('path').join(__dirname, 'node_modules/wcjs-prebuilt/bin/plugins');
+process.env['VLC_PLUGIN_PATH'] = 'D:\\projects\\walue\\node_modules\\wcjs-prebuilt\\bin\\plugins';
+console.log("VLC_PLUGIN_PATH", process.env['VLC_PLUGIN_PATH']);
 var win: any;
+var webServer;
 function onReady() {
-    openWin();
+    webServer= new WebServer(openWin);
 }
 const spawn = require('child_process').spawn;
 var watchView;
 var watchServer;
 var isWatch = false;
 var sender;
-function devWatch() {
-    if (isWatch) {
-        // watchServer.kill();
-        // watchView.kill();
-        return;
-    }
-    isWatch = true;
-    function sendServer(data) {
-        sender.send('logServer', data);
-    }
-
-    function sendView(data) {
-        sender.send('logView', data);
-    }
-
-    watchView = spawn('npm.cmd', ['run', 'view'], {
-        detached: false,
-        stdio: ['ignore']
-    });
-
-    watchView.stdout.on('data', sendView);
-
-    watchView.stderr.on('data', sendView);
-
-    watchView.on('close', sendView);
-
-    watchServer = spawn('npm.cmd', ['run', 'server'], {
-        detached: false
-    });
-
-    watchServer.stdout.on('data', sendServer);
-
-    watchServer.stderr.on('data', sendServer);
-
-    watchServer.on('close', sendServer);
-}
 function killWatch() {
     // if (isWatch) {
     if (watchView) {
@@ -65,11 +36,10 @@ function openWin(serverConf?: any) {
 
     ipcMain.on('devWatch', (event: any, arg: any) => {
         sender = event.sender;
-        devWatch();
     });
 
     win = new BrowserWindow({
-        width: 950, height: 540,
+        width: 1440, height: 900,
         // width: 500, height: 540,
         resizable: false,
         frame: true,
@@ -78,7 +48,11 @@ function openWin(serverConf?: any) {
     });
     // win.setMenu(null);
     win.setMenuBarVisibility(false);
-    win.loadURL('file:///resources/app/reload.html');
+    // win.loadURL('file:///resources/app/reload.html');
+    // win.loadURL('file:///resources/app/monitor.html');
+    // win.loadURL('file:///resources/app/index.html');
+    win.loadURL('file:///resources/app/view/monitor/index.ejs');
+    win.toggleDevTools({mode: 'detach'});
     // win.loadURL(`file:///app/reload.html`);
     win.on('closed', function () {
         win = null;

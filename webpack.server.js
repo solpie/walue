@@ -4,7 +4,7 @@ var path = require('path');
 module.exports = {
     entry: {
         "main": "./src/main.ts",//electron default entry index.js if no package.json
-        "Server": "./src/Server.ts"
+        "static/monitor/index": "./src/view/monitor/index.ts"
     },
     target: "electron",
     externals: [nodeExternals()],
@@ -25,7 +25,9 @@ module.exports = {
         ],
         loaders: [
             // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
-            {test: /\.tsx?$/, exclude: [/node_modules/], loader: 'ts-loader'}
+            {test: /\.tsx?$/, exclude: [/node_modules/], loader: 'ts-loader'},
+            {test: /\.html$/, loader: "html-loader?minimize=false"}
+
         ]
     },
     plugins: [
@@ -39,7 +41,9 @@ module.exports = {
                 from: '**/*', to: 'static/'
             },
             {from: 'src/package.json'},
-            {from: 'src/reload.html'}
+            {from: 'src/reload.html'},
+            {from: 'src/index.html'},
+            {from: 'src/monitor.html'}
         ])
     ]
 };

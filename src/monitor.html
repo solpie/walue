@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WeiluTV</title>
+    <style>
+        body,html{ width: 100%; height: 100%; padding: 0px; margin:0px }
+        #player { width: 100%; height: 100% }
+    </style>
+</head>
+<body>
+<div id="player"></div>
+<script>
+    var wjs = require("wcjs-player");
+    var player = new wjs("#player").addPlayer({
+        autoplay: true,
+        // wcjs: require('wcjs-prebuilt')
+        // OR
+        wcjs: require('webchimera.js')
+        // OR
+        // wcjs: require([path-to-Webchimera.js.node-file])
+    });
+    player.addPlaylist("rtmp://huputv-ws-live.arenacdn.com/prod/NvS4rQzyGQDWEJLi_1000");
+    console.log(player);
+    //    var wjs = require("wcjs-player");
+//    var player = new wjs("#player").addPlayer({
+//        autoplay: true,
+//        // wcjs: require('wcjs-prebuilt')
+//        // OR
+//        wcjs: require('webchimera.js')
+//        // OR
+//        // wcjs: require([path-to-Webchimera.js.node-file])
+//    });
+//    player.addPlaylist("rtmp://huputv-ws-live.arenacdn.com/prod/NvS4rQzyGQDWEJLi_1000");
+    //    player.addPlaylist();
+</script>
+</body>
+</html>
