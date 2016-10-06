@@ -85,7 +85,6 @@ function openWin(serverConf?: any) {
     });
 }
 
-
 app.on('ready', onReady);
 app.on('window-all-closed', ()=> {
     console.log('window-all-closed');

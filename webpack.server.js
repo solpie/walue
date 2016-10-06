@@ -34,10 +34,9 @@ module.exports = {
                 context: 'src/',
                 from: 'view/**/*.ejs'
             },
-
             {
-                context: 'src/',
-                from: 'static/**/*', to: "static"
+                context: 'src/static/',
+                from: '**/*', to: 'static/'
             },
             {from: 'src/package.json'},
             {from: 'src/reload.html'}
