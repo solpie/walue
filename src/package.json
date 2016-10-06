@@ -1,0 +1,11 @@
+{
+  "name": "Walue",
+  "version": "1.0.0",
+  "description": "Walue",
+  "main": "main.js",
+  "server": {
+    "port": 80,
+    "host": "localhost",
+    "wsPort": "9698"
+  }
+}

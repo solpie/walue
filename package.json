@@ -1,0 +1,42 @@
+{
+  "name": "walue",
+  "description": "walue Player",
+  "version": "0.0.2",
+  "main": "main.js",
+  "dependencies": {
+    "ansi2html": "0.0.1",
+    "body-parser": "^1.15.2",
+    "ejs": "^2.5.2",
+    "electron": "^1.4.2",
+    "express": "^4.14.0",
+    "vue": "^2.0.1",
+    "vue-class-component": "^4.0.1",
+    "vue-resource": "^1.0.3",
+    "vue-router": "^2.0.0",
+    "wcjs-player": "^6.0.0"
+  },
+  "scripts": {
+    "watch": "npm run server&npm run view",
+    "build": "npm run server-build&npm run view-build",
+    "view": "webpack --watch --progress --profile --colors --disZplay-error-details --display-cached --config webpack.view.js",
+    "view-build": "webpack --progress --profile --colors --disZplay-error-details --display-cached --config webpack.view.js",
+    "server": "webpack --watch --progress --profile --colors --display-error-details --display-cached --config webpack.server.js",
+    "server-build": "webpack --progress --profile --colors --display-error-details --display-cached --config webpack.server.js",
+    "pack": "npm run electron-packager&&npm run copy-node_modules&&explorer YuanQiTV-Billiard-win32-x64",
+    "app": "npm run build && electron resources/app --enable-logging",
+    "electron-packager": "electron-packager resources/app YuanQiTV-Billiard --ignore=node_modules/electron-* --platform=win32 --arch=x64 --overwrite",
+    "copy-node_modules": "echo D|xcopy node_modules YuanQiTV-Billiard-win32-x64\\resources\\node_modules /EXCLUDE:node_modules.ignore /e /y",
+    "copy-app": "node script/copy_app.js"
+  },
+  "env": "development",
+  "devDependencies": {
+    "copy-webpack-plugin": "^3.0.1",
+    "html-loader": "^0.4.4",
+    "source-map-loader": "^0.1.5",
+    "ts-loader": "^0.8.2",
+    "tsd": "^0.6.5",
+    "typescript": "^2.0.3",
+    "webpack": "^1.13.2",
+    "webpack-node-externals": "^1.5.4"
+  }
+}
