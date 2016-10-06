@@ -1,38 +1,18 @@
-<html>
+<html lang="en">
 <head>
-    <style>
-        body, html {
-            width: 100%;
-            height: 100%;
-            padding: 0px;
-            margin: 0px
-        }
-
-        #player {
-            width: 100%;
-            height: 100%
-        }
-    </style>
+    <meta charset="UTF-8">
+    <title>WeiluTV</title>
+    <link type="text/css" rel="stylesheet" href="/resources/app/static/css/materialize.min.css"
+          media="screen,projection"/>
 </head>
 <body>
-<div id="player"></div>
-<script>
-    var webServer = require('./Server.js');
-
-    var wjs = require("wcjs-player");
-    var player = new wjs("#player").addPlayer({
-        autoplay: true,
-//	 wcjs: require('wcjs-prebuilt')
-        // OR
-        wcjs: require('webchimera.js')
-        // OR
-        // wcjs: require([path-to-Webchimera.js.node-file])
-    });
-
-    // player.addPlaylist("file:///test.mp4");
-    player.addPlaylist("rtmp://huputv-ws-live.arenacdn.com/prod/NvS4rQzyGQDWEJLi_1000");
-    console.log(player);
-</script>
+<div id="app">
+    <router-view></router-view>
+</div>
+<script src="/resources/app/static/js/vue/vue.min.js"></script>
+<script src="/resources/app/static/js/vue/vue-resource.min.js"></script>
+<script src="/resources/app/static/js/vue/vue-router.min.js"></script>
+<!--<script src="/resources/app/static/monitor/index.js"></script>-->
+<script src="http://127.0.0.1/monitor/index.js"></script>
 </body>
 </html>
-

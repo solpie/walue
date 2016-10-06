@@ -14,11 +14,7 @@ export var monitor = {
             var wjs = require("wcjs-player");
             player = new wjs("#player").addPlayer({
                 autoplay: true,
-                // wcjs: require('wcjs-prebuilt')
-                // OR
                 wcjs: require('webchimera.js')
-                // OR
-                // wcjs: require([path-to-Webchimera.js.node-file])
             });
             this.player = player;
             player.addPlaylist("rtmp://huputv-ws-live.arenacdn.com/prod/NvS4rQzyGQDWEJLi_1000");

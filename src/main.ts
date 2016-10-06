@@ -50,8 +50,8 @@ function openWin(serverConf?: any) {
     win.setMenuBarVisibility(false);
     // win.loadURL('file:///resources/app/reload.html');
     // win.loadURL('file:///resources/app/monitor.html');
-    // win.loadURL('file:///resources/app/index.html');
-    win.loadURL('file:///resources/app/view/monitor/index.ejs');
+    win.loadURL('file:///resources/app/index.html');
+    // win.loadURL('file:///resources/app/view/monitor/index.ejs');
     win.toggleDevTools({mode: 'detach'});
     // win.loadURL(`file:///app/reload.html`);
     win.on('closed', function () {

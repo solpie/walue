@@ -103,5 +103,4 @@ export class WebServer {
         // this.socketIO = new SocketIOSrv();
     }
 }
-// export var serverConf = ServerConf;
 // export var webServer = new WebServer();

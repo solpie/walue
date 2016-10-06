@@ -41,8 +41,6 @@ module.exports = {
                 from: '**/*', to: 'static/'
             },
             {from: 'src/package.json'},
-            {from: 'src/reload.html'},
-            {from: 'src/index.html'},
             {from: 'src/monitor.html'}
         ])
     ]
