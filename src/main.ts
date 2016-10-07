@@ -10,7 +10,8 @@ var win: any;
 var webServer;
 function onReady() {
     initEnv(()=> {
-        webServer = new WebServer(openWin);
+        if (!ServerConf.isClient)
+            webServer = new WebServer(openWin);
     });
 }
 
@@ -23,6 +24,7 @@ function initEnv(callback) {
         ServerConf.wsPort = packageJson['conf'].wsPort;
         ServerConf.host = packageJson['conf'].host;
         ServerConf.isClient = Boolean(packageJson['conf'].client);
+
         console.log("server config:", ServerConf);
         if (callback)
             callback();
