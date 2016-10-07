@@ -6,6 +6,8 @@
   "dependencies": {
     "electron": "^1.4.2",
     "jquery": "^3.1.1",
+    "protobufjs": "^5.0.1",
+    "socket.io": "^1.5.0",
     "unirest": "^0.5.1",
     "wcjs-player": "^6.0.1",
     "wcjs-prebuilt": "^3.0.0"

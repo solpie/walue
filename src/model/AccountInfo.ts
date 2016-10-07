@@ -12,7 +12,7 @@ export class AccountInfo {
             .headers({'Accept': 'application/json', 'Content-Type': 'application/json'})
             .send({username: ac, password: pw})
             .end((res)=> {
-                console.log(res.body);
+                console.log("login res:",res.body);
                 if (res.body.success) {
                     this._updateToken(ac, pw, res.body.result.token);
                     // this.accountArr.push({name: ac, pw: pw, token: res.body.result.token});

@@ -1,0 +1,45 @@
+syntax = 'proto3';
+
+message Message {
+  uint32 type = 1;
+  bytes content = 2;
+  uint32 timestamp = 3;
+  enum Type {
+    UNKNOWN = 0;
+    WATCHER_BROADCAST = 10;
+    LIVE_EVENT_BROADCAST = 11;
+    DANMAKU = 20;
+    SYSTEM_MESSAGE = 21;
+  }
+}
+
+// 观众广播
+message WacherBroadcast {
+  uint32 online = 1;
+}
+
+// 直播事件广播
+message LiveEventBroadcast {
+  uint32 type = 1;
+  enum Type {
+    UNKNOWN = 0;
+    LIVE_END = 10; // 直播结束
+    STREAMER_OFFLINE = 20; // 主播离开
+  }
+}
+
+message Danmaku {
+  reserved 1;
+  string content = 2;
+  User user = 3;
+  message User {
+    string id = 1;
+    string display_name = 2;
+    string avatar = 3;
+    string content = 4;
+  }
+}
+
+message SystemMessage {
+  string content = 1;
+}

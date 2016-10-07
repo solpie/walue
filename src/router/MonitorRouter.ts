@@ -1,5 +1,6 @@
 import {RoomInfo} from "../model/RoomInfo";
 import {AccountInfo} from "../model/AccountInfo";
+import {Danmaku, packDmk} from "../model/DmkInfo";
 export var monitorRouter = require('express').Router();
 
 
@@ -18,6 +19,14 @@ monitorRouter.post(`/login`, (req, res) => {
     res.send({accountArr: accountInfo.accountArr});
 });
 
+monitorRouter.post(`/dmk`, (req, res) => {
+    if (!req.body) return res.sendStatus(400);
+    var param = req.body;
+    var chat = param.chat;
+
+    res.sendStatus({msg: packDmk(param.content, param.user)});
+});
+
 
 monitorRouter.get('/account', function (req, res) {
     console.log(req);
@@ -26,7 +35,6 @@ monitorRouter.get('/account', function (req, res) {
 
 monitorRouter.get('/room', function (req, res) {
     console.log('roomArr');
-    accountInfo.login('20000000003', 'vl12450');
     var roomArr = [];
     var roomInfo;
 

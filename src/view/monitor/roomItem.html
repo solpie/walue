@@ -15,7 +15,7 @@
         <span>{{acSelected?acSelected.name:''}}</span>
         <input type="text" @keyup.enter="onSendDmk"
                style="width: 700px">
-        <a class="waves-effect waves-light btn"
-           style="height: 35px">发送</a>
+        <a class="waves-effect waves-light btn" style="height: 35px"
+           @click="onSendDmk">发送</a>
     </div>
 </div>
