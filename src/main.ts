@@ -24,8 +24,8 @@ function initEnv(callback) {
         ServerConf.wsPort = packageJson['conf'].wsPort;
         ServerConf.host = packageJson['conf'].host;
         ServerConf.isClient = Boolean(packageJson['conf'].client);
-
         console.log("server config:", ServerConf);
+
         if (callback)
             callback();
     });

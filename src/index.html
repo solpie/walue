@@ -12,7 +12,17 @@
 <script src="/resources/app/static/js/vue/vue.min.js"></script>
 <script src="/resources/app/static/js/vue/vue-resource.min.js"></script>
 <script src="/resources/app/static/js/vue/vue-router.min.js"></script>
-<!--<script src="/resources/app/static/monitor/index.js"></script>-->
-<script src="http://127.0.0.1/monitor/index.js"></script>
+<script type="text/javascript">
+    var fs = require('fs');
+    var ServerConf = {};
+    fs.readFile('resources/app/package.json', function (err, data) {
+        if (err) throw err;
+        var packageJson = JSON.parse(data);
+        ServerConf.host = packageJson['conf'].host;
+        var script = document.createElement('script');
+        script.src = "http://" + ServerConf.host + '/monitor/index.js';
+        document.body.appendChild(script);
+    })
+</script>
 </body>
 </html>
