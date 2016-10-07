@@ -1,4 +1,5 @@
 import {RoomItemView} from "./RoomItem";
+import {TopicItemView} from "./TopicItem";
 var $ = require("jquery");
 var isInitWCPlayer = false;
 var playerMap: any = {};
@@ -7,18 +8,26 @@ export var monitor = {
     props: [
         'accountArr',
         'acOptionArr',
+        'topicArr',
         'roomArr'
     ],
     template: require('./monitor.html'),
-    components: {'roomItem': RoomItemView},
+    components: {'roomItem': RoomItemView, 'topicItem': TopicItemView},
     created: function () {
         console.log('create!');
     },
     mounted: function () {
         console.log('mounted!');
-        this.getRoomInfo();
+        // this.getRoomInfo();
+        this.getTopicInfo();
     },
     methods: {
+        getTopicInfo: function () {
+            this.$http.get('http://127.0.0.1/monitor/topic').then((res) => {
+                this.topicArr = res.body.topicArr;
+                console.log('topicInfo', this.topicArr);
+            });
+        },
         getRoomInfo: function () {
             this.$http.get('http://127.0.0.1/monitor/room').then((res) => {
                 this.roomArr = res.body.roomArr;

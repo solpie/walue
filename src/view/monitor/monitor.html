@@ -1,13 +1,40 @@
-<div class="row">
+<div class="container">
     <a class="waves-effect waves-light btn"
        @click="onRefreshRoom">刷新房间列表</a>
-    <div class="row" v-for="(roomInfo, index) in roomArr">
-        <roomItem :idx="index"
-                  :roomInfo='roomInfo'
-                  :accountArr='accountArr'
-                  :acOptionArr='acOptionArr'
-                  v-on:login="onLogin">
-        </roomItem>
+    <!--<ul class="tabs">-->
+    <!--<li class="tab col s3"><a class="active" href="#tab1">Topic</a></li>-->
+    <!--<li class="tab col s3"><a href="#tab2">Room</a></li>-->
+    <!--</ul>-->
+
+    <div class="card-panel grey lighten-3" style="width: 250px">
+
+        <div class="collection">
+            <!--<a href="#!" class="collection-item">Alvin</a>-->
+            <!--<a href="#!" class="collection-item active">Alvin</a>-->
+            <!--<a href="#!" class="collection-item">Alvin</a>-->
+           <!---->
+            <vue v-for="(topic,index) in topicArr">
+                <topicItem :id="topic.id" :topic="topic.topic"></topicItem>
+            </vue>
+        </div>
+
+    </div>
+    <div class="card-panel grey lighten-3">
+        <vue class="row" v-for="(roomInfo, index) in roomArr">
+            <roomItem :idx="index"
+                      :roomInfo='roomInfo'
+                      :accountArr='accountArr'
+                      :acOptionArr='acOptionArr'
+                      v-on:login="onLogin">
+            </roomItem>
+        </vue>
     </div>
 </div>
+<div id="tab1">
+
+</div>
+<div id="tab2">
+
+</div>
+
 

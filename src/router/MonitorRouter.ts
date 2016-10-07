@@ -1,8 +1,10 @@
-import {RoomInfo} from "../model/RoomInfo";
 import {AccountInfo} from "../model/AccountInfo";
-import {Danmaku, packDmk} from "../model/DmkInfo";
+import {packDmk} from "../model/DmkInfo";
+import {RoomInfo} from "../model/RoomInfo";
+import {TopicInfo} from "../model/TopicInfo";
 export var monitorRouter = require('express').Router();
 
+var unirest = require('unirest');
 
 var accountInfo = new AccountInfo();
 
@@ -33,53 +35,120 @@ monitorRouter.get('/account', function (req, res) {
     res.send({accountArr: accountInfo.accountArr});
 });
 
+
+monitorRouter.get('/topic', function (req, res) {
+    getTopic((topicInfoArr)=> {
+        res.send({topicArr: topicInfoArr});
+    });
+});
+
+var getTopic = (callback?)=> {
+    var topicArr = [];
+    unirest.post('http://api.weilutv.com/1/topic/list')
+        .headers({'Accept': 'application/json', 'Content-Type': 'application/json'})
+        .end((res1)=> {
+            console.log(res1.body);
+            var topics = res1.body.result.topics;
+            if (res1.body.success) {
+                // console.log(topics[0]);
+                for (var i = 0; i < topics.length; i++) {
+                    var obj = topics[i];
+                    var topicInfo = new TopicInfo();
+                    topicInfo.id = obj.id;
+                    topicInfo.topic = obj.content;
+                    topicArr.push(topicInfo);
+
+                    console.log('id', obj.id, 'content:', obj.content);
+                }
+                if (callback)
+                    callback(topicArr)
+            }
+            else throw "get /1/topic/list failed";
+        });
+};
+var getLive = (topicId)=> {
+    var roomArr = [];
+    var roomInfo;
+    unirest.post(`https://api.weilutv.com/1/topic/${topicId}/live/live_list`)
+        .headers({'Accept': 'application/json', 'Content-Type': 'application/json'})
+        .end((res2)=> {
+            var lives = res2.body.result.lives;
+            var hasMore = res2.body.result.cursor.hasMore;
+            var cursor = res2.body.result.cursor.cursor;
+            for (var j = 0; j < lives.length; j++) {
+                var liveObj = lives[j];
+                roomInfo = new RoomInfo;
+                roomInfo.chat = liveObj.chat;
+                roomInfo.title = liveObj.topic.content;
+                roomInfo.mc = liveObj.user.displayName;
+                roomInfo.rtmp = liveObj.playUrl;
+                roomArr.push(roomInfo);
+            }
+        });
+};
 monitorRouter.get('/room', function (req, res) {
     console.log('roomArr');
     var roomArr = [];
     var roomInfo;
+    // Yuki 15:17:48
+    // POST https://api.weilutv.com/1/topic/{$topicId}/live/live_list
+    // {
+    //     cursor?: 上次的cursor
+    // }
+    //
+    // GET https://api.weilutv.com/1/live/{$liveId}
+    //     里面给的playUrl就是播放地址，chat是弹幕服务器地址
+    getTopic();
+    // unirest.post('http://api.weilutv.com/1/topic/list')
+    //     .headers({'Accept': 'application/json', 'Content-Type': 'application/json'})
+    //     .end(function (res1) {
+    //         // console.log(res.body);
+    //         var topics = res1.body.result.topics;
+    //         if (res1.body.success) {
+    //             console.log(topics[0]);
+    //             for (var i = 0; i < topics.length; i++) {
+    //                 var obj = topics[i];
+    //                 unirest.post(`https://api.weilutv.com/1/topic/${obj.id}/live/live_list`)
+    //                     .headers({'Accept': 'application/json', 'Content-Type': 'application/json'})
+    //                     .end((res2)=> {
+    //                         var lives = res2.body.result.lives;
+    //                         var hasMore = res2.body.result.cursor.hasMore;
+    //                         var cursor = res2.body.result.cursor.cursor;
+    //                         for (var j = 0; j < lives.length; j++) {
+    //                             var liveObj = lives[j];
+    //                             roomInfo = new RoomInfo;
+    //                             roomInfo.chat = liveObj.chat;
+    //                             roomInfo.title = liveObj.topic.content;
+    //                             roomInfo.mc = liveObj.user.displayName;
+    //                             roomInfo.rtmp = liveObj.playUrl;
+    //                             roomArr.push(roomInfo);
+    //                         }
+    //                     });
+    //             }
+    //         }
+    //         else throw "get /room failed";
+    //         //test
+    //         // roomInfo = new RoomInfo;
+    //         // roomInfo.title = 'test';
+    //         // roomInfo.mc = 'mc1';
+    //         // roomInfo.rtmp = 'rtmp://huputv-ws-live.arenacdn.com/prod/NvS4rQzyGQDWEJLi_1000';
+    //         // roomArr.push(roomInfo);
+    //         //
+    //         // roomInfo = new RoomInfo;
+    //         // roomInfo.title = 'local test';
+    //         // roomInfo.mc = 'mp4';
+    //         // roomInfo.rtmp = 'file:///D:/test.mp4';
+    //         // roomArr.push(roomInfo);
+    //         //
+    //         // roomInfo = new RoomInfo;
+    //         // roomInfo.title = 'local test';
+    //         // roomInfo.mc = 'flv';
+    //         // roomInfo.rtmp = 'file:///D:/testflv.flv';
+    //         // roomArr.push(roomInfo);
+    //         res.send({roomArr: roomArr, accountArr: accountInfo.accountArr});
+    //     });
 
 
-    var unirest = require('unirest');
-    unirest.post('https://api.weilutv.com/1/topic/56/live/live_list')
-        .headers({'Accept': 'application/json', 'Content-Type': 'application/json'})
-        .end(function (response) {
-            console.log(response.body);
-            var lives = response.body.result.lives;
-            var hasMore = response.body.result.cursor.hasMore;
-            var cursor = response.body.result.cursor.cursor;
-            if (response.body.success) {
-                for (var i = 0; i < lives.length; i++) {
-                    var obj = lives[i];
-                    // console.log(lives[0]);
-                    roomInfo = new RoomInfo;
-                    roomInfo.chat = obj.chat;
-                    roomInfo.title = obj.topic.content;
-                    roomInfo.mc = obj.user.displayName;
-                    roomInfo.rtmp = obj.playUrl;
-                    roomArr.push(roomInfo);
-                }
-            }
-            else throw "get /room failed";
-            //test
-            roomInfo = new RoomInfo;
-            roomInfo.title = 'test';
-            roomInfo.mc = 'mc1';
-            roomInfo.rtmp = 'rtmp://huputv-ws-live.arenacdn.com/prod/NvS4rQzyGQDWEJLi_1000';
-            roomArr.push(roomInfo);
-
-            roomInfo = new RoomInfo;
-            roomInfo.title = 'local test';
-            roomInfo.mc = 'mp4';
-            roomInfo.rtmp = 'file:///D:/test.mp4';
-            roomArr.push(roomInfo);
-
-            roomInfo = new RoomInfo;
-            roomInfo.title = 'local test';
-            roomInfo.mc = 'flv';
-            roomInfo.rtmp = 'file:///D:/testflv.flv';
-            roomArr.push(roomInfo);
-            res.send({roomArr: roomArr, accountArr: accountInfo.accountArr});
-        });
     // { success: true,
     //     result:
     //     { cursor: { cursor: '115:15130f3e367e2469f67baa', hasMore: false },
