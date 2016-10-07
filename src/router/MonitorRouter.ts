@@ -19,7 +19,7 @@ monitorRouter.get('/room', function (req, res) {
     roomInfo = new RoomInfo;
     roomInfo.title = 'local test';
     roomInfo.mc = 'mp4';
-    roomInfo.rtmp = 'file://test.mp4';
+    roomInfo.rtmp = 'file:///D:/test.mp4';
     roomArr.push(roomInfo);
     res.send({roomArr: roomArr});
 });

@@ -1,6 +1,6 @@
-var player;
 var $ = require("jquery");
 var isInitWCPlayer = false;
+var playerMap: any = {};
 export var monitor = {
     // camelCase in JavaScript
     props: [
@@ -41,17 +41,21 @@ export var monitor = {
                 });
             }
         },
-        onOpenRoom: function (val,rtmp) {
-            console.log('onOpenRoom', val,rtmp);
+        onOpenRoom: function (val, rtmp) {
+            console.log('onOpenRoom', val, rtmp);
 
             this.initWCPlayer();
 
             var wjs = require("wcjs-player");
-            player = new wjs("#player" + val).addPlayer({
-                autoplay: true,
-                wcjs: require('webchimera.js')
-            });
-            this.player = player;
+            var playerId = "#player" + val;
+            var player;
+            if (!playerMap[playerId]) {
+                player = new wjs(playerId).addPlayer({
+                    autoplay: true,
+                    wcjs: require('webchimera.js')
+                });
+                playerMap[playerId] = player;
+            }
             player.addPlaylist(rtmp);
         },
         onRefreshRoom: function () {

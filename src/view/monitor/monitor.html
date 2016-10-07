@@ -2,16 +2,21 @@
     <a class="waves-effect waves-light btn"
        @click="onRefreshRoom">刷新房间列表</a>
     <div class="row">
-        <div class="col">
-        </div>
+
         <div class="col">
             <div class="row" v-for="(roomInfo, index) in roomArr">
-                <div class="WCPlayer" style="width: 340px;height:240px"></div>
-                <div class="row">{{roomInfo.title}} {{roomInfo.mc}}
-                    <a @click="onOpenRoom(index,roomInfo.rtmp)">{{roomInfo.rtmp}}</a>
+                <div class="col">
+                    <div class="WCPlayer" style="width: 340px;height:240px"></div>
                 </div>
-                <input type="text" @keyup.enter="onSendDmk"
-                       style="width: 75px">
+                <div class="col">
+                    <div class="row">{{roomInfo.title}} {{roomInfo.mc}}
+                        <a @click="onOpenRoom(index,roomInfo.rtmp)">{{roomInfo.rtmp}}</a>
+                    </div>
+                    <input type="text" @keyup.enter="onSendDmk"
+                           style="width: 700px">
+                    <a class="waves-effect waves-light btn"
+                       style="height: 35px">发送</a>
+                </div>
             </div>
         </div>
     </div>
