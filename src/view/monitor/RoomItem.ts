@@ -1,4 +1,5 @@
 var $ = require("jquery");
+declare var ServerConf;
 export var RoomItemView = {
     props: {
         idx: {},
@@ -21,8 +22,18 @@ export var RoomItemView = {
                 wcjs: require('webchimera.js')
             });
         },
-        onAcSelected: function (val) {
-            console.log(this.acSelected, val);
+        onAcSelected: function () {
+            var acObj = this.acSelected;
+            var ac = acObj.name;
+            var pw = acObj.pw;
+            var token = acObj.token;
+            if (!token) {
+                this.$http.post(`http://${ServerConf.host}/monitor/login`, {ac: ac, pw: pw}).then((res) => {
+                    console.log(res.body);
+                    this.$emit('login', res.body.accountArr);
+                });
+            }
+            console.log(ac, pw, token);
         },
         onOpenRoom: function (val, rtmp) {
             console.log('onOpenRoom', val, rtmp);

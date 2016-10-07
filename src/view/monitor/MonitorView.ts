@@ -22,14 +22,23 @@ export var monitor = {
         getRoomInfo: function () {
             this.$http.get('http://127.0.0.1/monitor/room').then((res) => {
                 this.roomArr = res.body.roomArr;
-                this.accountArr = res.body.accountArr;
-                this.acOptionArr = [];
-                for (var i = 0; i < this.accountArr.length; i++) {
-                    var acObj = this.accountArr[i];
-                    this.acOptionArr.push({text: acObj.name, value: acObj});
-                }
+                // this.accountArr = res.body.accountArr;
+                // this.acOptionArr = [];
+                // for (var i = 0; i < this.accountArr.length; i++) {
+                //     var acObj = this.accountArr[i];
+                //     this.acOptionArr.push({text: acObj.name, value: acObj});
+                // }
+                this.updateAccountOption(res.body.accountArr);
                 this.initWCPlayer();
             });
+        },
+        updateAccountOption: function (accountArr) {
+            this.accountArr = accountArr;
+            this.acOptionArr = [];
+            for (var i = 0; i < accountArr.length; i++) {
+                var acObj = accountArr[i];
+                this.acOptionArr.push({text: acObj.name, value: acObj});
+            }
         },
         onAcSelected: function (val) {
             console.log(val);
@@ -43,6 +52,10 @@ export var monitor = {
             }
         },
 
+        onLogin: function (accountArr) {
+            console.log('onLogin', accountArr);
+            this.updateAccountOption(accountArr);
+        },
         onRefreshRoom: function () {
             console.log('onRefreshRoom');
         },
