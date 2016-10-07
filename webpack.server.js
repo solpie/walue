@@ -41,7 +41,7 @@ module.exports = {
                 from: '**/*', to: 'static/'
             },
             {from: 'src/package.json'},
-            {from: 'src/monitor.html'}
+            {from: 'src/index.html'}
         ])
     ]
 };
