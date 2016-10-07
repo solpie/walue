@@ -1,8 +1,18 @@
 import {RoomInfo} from "../model/RoomInfo";
+import {AccountInfo} from "../model/AccountInfo";
 export var monitorRouter = require('express').Router();
+
+
+var accountInfo = new AccountInfo();
 
 monitorRouter.get('/', function (req, res) {
     res.render('monitor/index');
+});
+
+
+monitorRouter.get('/account', function (req, res) {
+    console.log(req);
+    res.send({accountArr: accountInfo.accountArr});
 });
 
 monitorRouter.get('/room', function (req, res) {
@@ -21,5 +31,5 @@ monitorRouter.get('/room', function (req, res) {
     roomInfo.mc = 'mp4';
     roomInfo.rtmp = 'file:///D:/test.mp4';
     roomArr.push(roomInfo);
-    res.send({roomArr: roomArr});
+    res.send({roomArr: roomArr, accountArr: accountInfo.accountArr});
 });

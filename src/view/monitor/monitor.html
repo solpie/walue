@@ -12,6 +12,12 @@
                     <div class="row">{{roomInfo.title}} {{roomInfo.mc}}
                         <a @click="onOpenRoom(index,roomInfo.rtmp)">{{roomInfo.rtmp}}</a>
                     </div>
+                    帐号： <select class="browser-default" @change="onAcSelected"
+                                style="width: 150px">
+                    <option v-for="option in acOptionArr" v-bind:value="option.value">
+                        {{ option.text }}
+                    </option>
+                </select>
                     <input type="text" @keyup.enter="onSendDmk"
                            style="width: 700px">
                     <a class="waves-effect waves-light btn"
