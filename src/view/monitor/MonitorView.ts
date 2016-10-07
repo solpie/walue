@@ -28,6 +28,7 @@ export var monitor = {
                     var acObj = this.accountArr[i];
                     this.acOptionArr.push({text: acObj.name, value: acObj});
                 }
+                this.initWCPlayer();
             });
         },
         onAcSelected: function (val) {
@@ -41,22 +42,7 @@ export var monitor = {
                 });
             }
         },
-        onOpenRoom: function (val, rtmp) {
-            console.log('onOpenRoom', val, rtmp);
-            this.initWCPlayer();
 
-            var wjs = require("wcjs-player");
-            var playerId = "#player" + val;
-            var player;
-            if (!playerMap[playerId]) {
-                player = new wjs(playerId).addPlayer({
-                    autoplay: true,
-                    wcjs: require('webchimera.js')
-                });
-                playerMap[playerId] = player;
-            }
-            player.addPlaylist(rtmp);
-        },
         onRefreshRoom: function () {
             console.log('onRefreshRoom');
         },

@@ -4,7 +4,7 @@
     </div>
     <div class="col">
         <div class="row">{{roomInfo.title}} {{roomInfo.mc}}
-            <a @click="onOpenRoom(index,roomInfo.rtmp)">{{roomInfo.rtmp}}</a>
+            <a @click="onOpenRoom(idx,roomInfo.rtmp)">{{roomInfo.rtmp}}</a>
         </div>
         帐号： <select class="browser-default" v-model="acSelected" @change="onAcSelected"
                     style="width: 150px">

@@ -26,10 +26,18 @@ monitorRouter.get('/room', function (req, res) {
     roomInfo.mc = 'mc1';
     roomInfo.rtmp = 'rtmp://huputv-ws-live.arenacdn.com/prod/NvS4rQzyGQDWEJLi_1000';
     roomArr.push(roomInfo);
+
     roomInfo = new RoomInfo;
     roomInfo.title = 'local test';
     roomInfo.mc = 'mp4';
     roomInfo.rtmp = 'file:///D:/test.mp4';
     roomArr.push(roomInfo);
+
+    roomInfo = new RoomInfo;
+    roomInfo.title = 'local test';
+    roomInfo.mc = 'flv';
+    roomInfo.rtmp = 'file:///D:/testflv.flv';
+    roomArr.push(roomInfo);
+
     res.send({roomArr: roomArr, accountArr: accountInfo.accountArr});
 });
