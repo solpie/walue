@@ -1,3 +1,4 @@
+import {RoomItemView} from "./RoomItem";
 var $ = require("jquery");
 var isInitWCPlayer = false;
 var playerMap: any = {};
@@ -9,6 +10,7 @@ export var monitor = {
         'roomArr'
     ],
     template: require('./monitor.html'),
+    components: {'roomItem': RoomItemView},
     created: function () {
         console.log('create!');
     },
