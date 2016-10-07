@@ -22,6 +22,15 @@ export var monitor = {
         this.getTopicInfo();
     },
     methods: {
+        onSelectTopic: function (topicId) {
+            console.log('onSelectTopic', topicId);
+            this.$http.post('http://127.0.0.1/monitor/live', {topicId: topicId}).then((res) => {
+                this.roomArr = res.body.roomArr;
+                console.log('roomArr', this.roomArr);
+                // this.updateAccountOption(res.body.accountArr);
+                this.initWCPlayer();
+            });
+        },
         getTopicInfo: function () {
             this.$http.get('http://127.0.0.1/monitor/topic').then((res) => {
                 this.topicArr = res.body.topicArr;

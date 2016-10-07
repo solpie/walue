@@ -5,21 +5,15 @@
     <!--<li class="tab col s3"><a class="active" href="#tab1">Topic</a></li>-->
     <!--<li class="tab col s3"><a href="#tab2">Room</a></li>-->
     <!--</ul>-->
-
-    <div class="card-panel grey lighten-3" style="width: 250px">
-
+    <div class="card-panel grey lighten-3 col" style="width: 250px;position: absolute;left: 0;">
         <div class="collection">
-            <!--<a href="#!" class="collection-item">Alvin</a>-->
-            <!--<a href="#!" class="collection-item active">Alvin</a>-->
-            <!--<a href="#!" class="collection-item">Alvin</a>-->
-           <!---->
             <vue v-for="(topic,index) in topicArr">
-                <topicItem :id="topic.id" :topic="topic.topic"></topicItem>
+                <topicItem :id="topic.id" :topic="topic"
+                           v-on:select="onSelectTopic"></topicItem>
             </vue>
         </div>
-
     </div>
-    <div class="card-panel grey lighten-3">
+    <div class="card-panel grey lighten-3 col" style="position: absolute;left: 270px;">
         <vue class="row" v-for="(roomInfo, index) in roomArr">
             <roomItem :idx="index"
                       :roomInfo='roomInfo'
@@ -29,12 +23,6 @@
             </roomItem>
         </vue>
     </div>
-</div>
-<div id="tab1">
-
-</div>
-<div id="tab2">
-
 </div>
 
 

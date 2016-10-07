@@ -42,7 +42,7 @@ function openWin(serverConf?: any) {
     });
 
     win = new BrowserWindow({
-        width: 1440, height: 900,
+        width: 1600, height: 900,
         // width: 500, height: 540,
         resizable: false,
         frame: true,

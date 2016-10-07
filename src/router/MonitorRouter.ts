@@ -50,15 +50,16 @@ var getTopic = (callback?)=> {
             console.log(res1.body);
             var topics = res1.body.result.topics;
             if (res1.body.success) {
-                // console.log(topics[0]);
+                console.log(topics[0]);
                 for (var i = 0; i < topics.length; i++) {
                     var obj = topics[i];
                     var topicInfo = new TopicInfo();
                     topicInfo.id = obj.id;
                     topicInfo.topic = obj.content;
+                    topicInfo.liveCount = obj.count.live;
+                    topicInfo.viewCount = obj.count.view;
                     topicArr.push(topicInfo);
-
-                    console.log('id', obj.id, 'content:', obj.content);
+                    // console.log('id', obj.id, 'content:', obj.content);
                 }
                 if (callback)
                     callback(topicArr)
@@ -66,26 +67,41 @@ var getTopic = (callback?)=> {
             else throw "get /1/topic/list failed";
         });
 };
-var getLive = (topicId)=> {
+var getLive = (topicId, callback?)=> {
     var roomArr = [];
     var roomInfo;
-    unirest.post(`https://api.weilutv.com/1/topic/${topicId}/live/live_list`)
+    var liveUrl = `https://api.weilutv.com/1/topic/${topicId}/live/live_list`;
+    console.log(liveUrl);
+    unirest.post(liveUrl)
         .headers({'Accept': 'application/json', 'Content-Type': 'application/json'})
         .end((res2)=> {
-            var lives = res2.body.result.lives;
-            var hasMore = res2.body.result.cursor.hasMore;
-            var cursor = res2.body.result.cursor.cursor;
-            for (var j = 0; j < lives.length; j++) {
-                var liveObj = lives[j];
-                roomInfo = new RoomInfo;
-                roomInfo.chat = liveObj.chat;
-                roomInfo.title = liveObj.topic.content;
-                roomInfo.mc = liveObj.user.displayName;
-                roomInfo.rtmp = liveObj.playUrl;
-                roomArr.push(roomInfo);
+            console.log(res2.body);
+            if (res2.body.success) {
+                var lives = res2.body.result.lives;
+                var hasMore = res2.body.result.cursor.hasMore;
+                var cursor = res2.body.result.cursor.cursor;
+                for (var j = 0; j < lives.length; j++) {
+                    var liveObj = lives[j];
+                    roomInfo = new RoomInfo;
+                    roomInfo.chat = liveObj.chat;
+                    roomInfo.title = liveObj.topic.content;
+                    roomInfo.mc = liveObj.user.displayName;
+                    roomInfo.rtmp = liveObj.playUrl;
+                    roomArr.push(roomInfo);
+                }
+                if (callback)
+                    callback(roomArr);
             }
+            else throw "get /live_list failed";
         });
 };
+
+monitorRouter.post('/live', function (req, res) {
+    getLive(req.body.topicId, (roomArr)=> {
+        res.send({roomArr: roomArr});
+    });
+});
+
 monitorRouter.get('/room', function (req, res) {
     console.log('roomArr');
     var roomArr = [];
