@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "Walue",
   "main": "main.js",
-  "server": {
+  "conf": {
     "port": 80,
+    "client": 1,
     "host": "localhost",
     "wsPort": "9698"
   }

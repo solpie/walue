@@ -1,4 +1,5 @@
 import {WebServer} from "./Server";
+import {ServerConf} from "./Env";
 
 const {app, BrowserWindow, ipcMain} = require('electron');
 // if (process.platform == 'win32')
@@ -8,28 +9,28 @@ console.log("VLC_PLUGIN_PATH", process.env['VLC_PLUGIN_PATH']);
 var win: any;
 var webServer;
 function onReady() {
-    webServer= new WebServer(openWin);
+    initEnv(()=> {
+        webServer = new WebServer(openWin);
+    });
 }
-const spawn = require('child_process').spawn;
-var watchView;
-var watchServer;
-var isWatch = false;
-var sender;
-function killWatch() {
-    // if (isWatch) {
-    if (watchView) {
-        // watchView.stdin.pause();
-        watchView.kill('SIGKILL');
-    }
-    if (watchServer) {
-        // watchServer.stdin.pause();
-        watchServer.kill('SIGKILL');
-    }
-    // }
+
+function initEnv(callback) {
+    var fs = require('fs');
+    fs.readFile('resources/app/package.json', (err: any, data: any)=> {
+        if (err) throw err;
+        var packageJson: any = JSON.parse(data);
+        ServerConf.port = packageJson['conf'].port;
+        ServerConf.wsPort = packageJson['conf'].wsPort;
+        ServerConf.host = packageJson['conf'].host;
+        ServerConf.isClient = Boolean(packageJson['conf'].client);
+        console.log("server config:", ServerConf);
+        if (callback)
+            callback();
+    });
 }
-// var process:any= require("process");
 
 function openWin(serverConf?: any) {
+    var sender;
     ipcMain.on('open-devtool', (event: any, status: any) => {
         win.toggleDevTools({mode: 'detach'});
     });
@@ -62,7 +63,6 @@ function openWin(serverConf?: any) {
 app.on('ready', onReady);
 app.on('window-all-closed', ()=> {
     console.log('window-all-closed');
-    killWatch();
     if (process.platform !== 'darwin') {
         app.quit();
     }

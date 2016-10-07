@@ -1,1 +1,1 @@
-export var ServerConf:any = {isDev: false};
+export var ServerConf: any = {isDev: false, isClient: false};
