@@ -1,10 +1,10 @@
 <div class="row">
     <div class="col">
-        <div class="WCPlayer" style="width: 160px;height:240px"></div>
+        <div class="WCPlayer" style="width: 250px;height:440px"></div>
     </div>
     <div class="col">
         <div class="row">{{roomInfo.title}} {{roomInfo.mc}}
-            <a @click="onOpenRoom(idx,roomInfo.rtmp)">{{roomInfo.rtmp}}</a>
+            <a href="#" @click="onOpenRoom(idx,roomInfo.rtmp)">{{roomInfo.rtmp}}</a>
         </div>
         帐号： <select class="browser-default" v-model="acSelected" @change="onAcSelected"
                     style="width: 150px">
@@ -13,9 +13,14 @@
         </option>
     </select>
         <span>{{acSelected?acSelected.name:''}}</span>
-        <input type="text" @keyup.enter="onSendDmk"
+        <input class="DmkInput input-field" @keyup.enter="onInputEnter" v-model="dmkContent"
                style="width: 700px">
+        <!--<div class="input-field col s6" @keyup.enter="onSendDmk" v-model="dmkContent">-->
+        <!--<input id="input_text" type="text" length="10">-->
+        <!--<label for="input_text">输入弹幕</label>-->
+        <!--</div>-->
         <a class="waves-effect waves-light btn" style="height: 35px"
            @click="onSendDmk">发送</a>
+        <div class="row"><textarea style="height:240px" v-model="dmkArr"></textarea></div>
     </div>
 </div>

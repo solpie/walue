@@ -26,23 +26,23 @@ export class WebServer {
 
 
     initEnv(callback?: any) {
-        var process = require("process");
-        ServerConf.isDev = process.defaultApp || /[\\/]electron-prebuilt[\\/]/.test(process.execPath);
-        console.log(process.execPath, ServerConf.isDev);
-        var fs = require('fs');
-        fs.readFile('resources/app/package.json', (err: any, data: any)=> {
-            if (err) throw err;
-            dataObj = JSON.parse(data);
-            ServerConf.port = dataObj.server.port;
-            ServerConf.wsPort = dataObj.server.wsPort;
-            ServerConf.host = dataObj.server.host;
-            this.initServer();
-            // }
-            this.serverConf = ServerConf;
-            console.log("server config:", ServerConf);
-            if (callback)
-                callback(dataObj);
-        });
+        // var process = require("process");
+        // ServerConf.isDev = process.defaultApp || /[\\/]dist[\\/]/.test(process.execPath);
+        // console.log(process.execPath, ServerConf.isDev);
+        // var fs = require('fs');
+        // fs.readFile('resources/app/package.json', (err: any, data: any)=> {
+        //     if (err) throw err;
+        //     dataObj = JSON.parse(data);
+        //     ServerConf.port = dataObj.server.port;
+        //     ServerConf.wsPort = dataObj.server.wsPort;
+        //     ServerConf.host = dataObj.server.host;
+        //     this.initServer();
+        //     // }
+        //     this.serverConf = ServerConf;
+        //     console.log("server config:", ServerConf);
+        //     if (callback)
+        //         callback(dataObj);
+        // });
     }
 
     initServer() {

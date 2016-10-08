@@ -1,8 +1,10 @@
 import {RoomItemView} from "./RoomItem";
 import {TopicItemView} from "./TopicItem";
+import {descendingProp} from "../../utils/JsFunc";
+// import {ToppicItem2} from './TopicItem2.vue'
+// var ToppicItem2 = require('./TopicItem2.vue');
 var $ = require("jquery");
 var isInitWCPlayer = false;
-var playerMap: any = {};
 export var monitor = {
     // camelCase in JavaScript
     props: [
@@ -18,7 +20,7 @@ export var monitor = {
     },
     mounted: function () {
         console.log('mounted!');
-        // this.getRoomInfo();
+        this.getRoomInfo();
         this.getTopicInfo();
     },
     methods: {
@@ -33,13 +35,13 @@ export var monitor = {
         },
         getTopicInfo: function () {
             this.$http.get('http://127.0.0.1/monitor/topic').then((res) => {
-                this.topicArr = res.body.topicArr;
+                this.topicArr = res.body.topicArr.sort(descendingProp('liveCount'));
                 console.log('topicInfo', this.topicArr);
             });
         },
         getRoomInfo: function () {
             this.$http.get('http://127.0.0.1/monitor/room').then((res) => {
-                this.roomArr = res.body.roomArr;
+                // this.roomArr = res.body.roomArr;
                 // this.accountArr = res.body.accountArr;
                 // this.acOptionArr = [];
                 // for (var i = 0; i < this.accountArr.length; i++) {
@@ -47,7 +49,7 @@ export var monitor = {
                 //     this.acOptionArr.push({text: acObj.name, value: acObj});
                 // }
                 this.updateAccountOption(res.body.accountArr);
-                this.initWCPlayer();
+                // this.initWCPlayer();
             });
         },
         updateAccountOption: function (accountArr) {

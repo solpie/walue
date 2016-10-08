@@ -19,6 +19,10 @@ module.exports = {
     module: {
         preLoaders: [
             {
+                test: /\.vue$/,
+                loader: 'vue'
+            },
+            {
                 test: /\.js$/,
                 loader: 'source-map-loader'
             }
@@ -41,6 +45,7 @@ module.exports = {
                 from: '**/*', to: 'static/'
             },
             {from: 'src/package.json'},
+            {from: 'src/server.html'},
             {from: 'src/index.html'}
         ])
     ]

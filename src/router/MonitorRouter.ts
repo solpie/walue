@@ -7,7 +7,26 @@ export var monitorRouter = require('express').Router();
 var unirest = require('unirest');
 
 var accountInfo = new AccountInfo();
-
+// function testPb()
+// {
+//     var ProtoBuf = require("protobufjs");
+//     var builder = ProtoBuf.newBuilder({convertFieldsToCamelCase: true});
+//     ProtoBuf.loadProtoFile("resources/app/static/pb/live_websocket.proto", builder);
+//
+//     var root = builder.build();
+//     var dmkMsg = new root.Danmaku();
+//     dmkMsg.content = '11111';
+//     var msg = new root.Message();
+//     msg.content = dmkMsg;
+//     msg.type = 20;
+//     msg.timestamp = new Date().getTime();
+//     // dmkMsg.user.id = user.id;
+//     // dmkMsg.user.avatar = user.avatar;
+//     // dmkMsg.user.displayName = user.displayName;
+//     // var byteBuffer = msg.encode();
+//     // return byteBuffer;
+// }
+// console.log(testPb());
 monitorRouter.get('/', function (req, res) {
     res.render('monitor/index');
 });
@@ -114,7 +133,7 @@ monitorRouter.get('/room', function (req, res) {
     //
     // GET https://api.weilutv.com/1/live/{$liveId}
     //     里面给的playUrl就是播放地址，chat是弹幕服务器地址
-    getTopic();
+    // getTopic();
     // unirest.post('http://api.weilutv.com/1/topic/list')
     //     .headers({'Accept': 'application/json', 'Content-Type': 'application/json'})
     //     .end(function (res1) {
@@ -172,5 +191,6 @@ monitorRouter.get('/room', function (req, res) {
     // var roomArr = ['rtmp://huputv-ws-live.arenacdn.com/prod/NvS4rQzyGQDWEJLi_1000',
     //     'rtmp://huputv-ws-live.arenacdn.com/prod/NvS4rQzyGQDWEJLi_1000'];
 
+    res.send({roomArr: roomArr, accountArr: accountInfo.accountArr});
 
 });

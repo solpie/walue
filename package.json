@@ -14,7 +14,8 @@
   },
   "env": "development",
   "devDependencies": {
-    "electron-packager": "^8.1.0"
+    "electron-packager": "^8.1.0",
+    "vue-loader": "^9.5.1"
   },
   "scripts": {
     "app": "electron resources/app",
