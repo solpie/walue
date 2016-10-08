@@ -7,26 +7,6 @@ export var monitorRouter = require('express').Router();
 var unirest = require('unirest');
 
 var accountInfo = new AccountInfo();
-// function testPb()
-// {
-//     var ProtoBuf = require("protobufjs");
-//     var builder = ProtoBuf.newBuilder({convertFieldsToCamelCase: true});
-//     ProtoBuf.loadProtoFile("resources/app/static/pb/live_websocket.proto", builder);
-//
-//     var root = builder.build();
-//     var dmkMsg = new root.Danmaku();
-//     dmkMsg.content = '11111';
-//     var msg = new root.Message();
-//     msg.content = dmkMsg;
-//     msg.type = 20;
-//     msg.timestamp = new Date().getTime();
-//     // dmkMsg.user.id = user.id;
-//     // dmkMsg.user.avatar = user.avatar;
-//     // dmkMsg.user.displayName = user.displayName;
-//     // var byteBuffer = msg.encode();
-//     // return byteBuffer;
-// }
-// console.log(testPb());
 monitorRouter.get('/', function (req, res) {
     res.render('monitor/index');
 });
@@ -61,13 +41,18 @@ monitorRouter.get('/topic', function (req, res) {
     });
 });
 
-var getTopic = (callback?)=> {
+var getTopic = (callback?, cursor?, topicArrPre?)=> {
     var topicArr = [];
+    if (topicArrPre)
+        topicArr = topicArr.concat(topicArrPre);
     unirest.post('http://api.weilutv.com/1/topic/list')
         .headers({'Accept': 'application/json', 'Content-Type': 'application/json'})
+        .send({cursor: cursor})
         .end((res1)=> {
             console.log(res1.body);
             var topics = res1.body.result.topics;
+            var hasMore = res1.body.result.cursor.hasMore;
+            var cursor = res1.body.result.cursor;
             if (res1.body.success) {
                 console.log(topics[0]);
                 for (var i = 0; i < topics.length; i++) {
@@ -77,11 +62,17 @@ var getTopic = (callback?)=> {
                     topicInfo.topic = obj.content;
                     topicInfo.liveCount = obj.count.live;
                     topicInfo.viewCount = obj.count.view;
+                    topicInfo.hasActiveLive = obj.hasActiveLive;
                     topicArr.push(topicInfo);
                     // console.log('id', obj.id, 'content:', obj.content);
                 }
-                if (callback)
-                    callback(topicArr)
+                if (hasMore) {
+                    getTopic(callback, cursor, topicArr);
+                }
+                else {
+                    if (callback)
+                        callback(topicArr)
+                }
             }
             else throw "get /1/topic/list failed";
         });

@@ -35,7 +35,19 @@ export var monitor = {
         },
         getTopicInfo: function () {
             this.$http.get('http://127.0.0.1/monitor/topic').then((res) => {
-                this.topicArr = res.body.topicArr.sort(descendingProp('liveCount'));
+                var a = res.body.topicArr.sort(descendingProp('liveCount'));
+                var actTopic = [];
+                var disactTopic = [];
+                for (var i = 0; i < a.length; i++) {
+                    var topicObj = a[i];
+                    if (topicObj.hasActiveLive) {
+                        actTopic.push(topicObj);
+                    }
+                    else
+                        disactTopic.push(topicObj);
+                }
+                this.topicArr = actTopic.concat(disactTopic);
+
                 console.log('topicInfo', this.topicArr);
             });
         },

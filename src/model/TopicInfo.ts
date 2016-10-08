@@ -3,4 +3,5 @@ export class TopicInfo{
     topic:string;
     liveCount:number;
     viewCount: number;
+    hasActiveLive:boolean;
 }
