@@ -6,7 +6,7 @@
   "conf": {
     "port": 80,
     "client": 0,
-    "host": "localhost",
+    "host": "192.168.1.252/walue",
     "wsPort": "9698"
   }
 }

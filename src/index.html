@@ -20,8 +20,14 @@
         if (err) throw err;
         var packageJson = JSON.parse(data);
         ServerConf.host = packageJson['conf'].host;
+        ServerConf.isDev = process.defaultApp || /[\\/]projects[\\/]/.test(process.execPath);
         var script = document.createElement('script');
-        script.src = "http://" + ServerConf.host + '/monitor/index.js';
+        console.log('isDev', ServerConf.isDev);
+        var t = new Date().getTime();
+        if (ServerConf.isDev)
+            script.src = "file:///resources/app/static/monitor/index.js";
+        else
+            script.src = "http://" + ServerConf.host + '/monitor/index.js?t=' + t;
         document.body.appendChild(script);
     })
 </script>

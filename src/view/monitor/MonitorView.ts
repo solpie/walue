@@ -1,6 +1,7 @@
 import {RoomItemView} from "./RoomItem";
 import {TopicItemView} from "./TopicItem";
 import {descendingProp} from "../../utils/JsFunc";
+import {monitorModel} from "../../model/MonitorModel";
 // import {ToppicItem2} from './TopicItem2.vue'
 // var ToppicItem2 = require('./TopicItem2.vue');
 var $ = require("jquery");
@@ -31,16 +32,16 @@ export var monitor = {
     methods: {
         onSelectTopic: function (topicId) {
             console.log('onSelectTopic', topicId);
-            this.$http.post('http://127.0.0.1/monitor/live', {topicId: topicId}).then((res) => {
-                this.roomArr = res.body.roomArr;
+
+            monitorModel.getLive(topicId, (roomArr)=> {
+                this.roomArr = roomArr;
                 console.log('roomArr', this.roomArr);
-                // this.updateAccountOption(res.body.accountArr);
                 this.initWCPlayer();
             });
         },
         getTopicInfo: function () {
-            this.$http.get('http://127.0.0.1/monitor/topic').then((res) => {
-                var a = res.body.topicArr.sort(descendingProp('liveCount'));
+            monitorModel.getTopic((topicInfoArr)=> {
+                var a = topicInfoArr.sort(descendingProp('liveCount'));
                 var actTopic = [];
                 var disactTopic = [];
                 for (var i = 0; i < a.length; i++) {
@@ -53,22 +54,21 @@ export var monitor = {
                 }
                 this.topicArr = actTopic.concat();
                 // this.topicArr = actTopic.concat(disactTopic);
-
                 console.log('topicInfo', this.topicArr);
             });
         },
         getRoomInfo: function () {
-            this.$http.get('http://127.0.0.1/monitor/room').then((res) => {
-                // this.roomArr = res.body.roomArr;
-                // this.accountArr = res.body.accountArr;
-                // this.acOptionArr = [];
-                // for (var i = 0; i < this.accountArr.length; i++) {
-                //     var acObj = this.accountArr[i];
-                //     this.acOptionArr.push({text: acObj.name, value: acObj});
-                // }
-                this.updateAccountOption(res.body.accountArr);
-                // this.initWCPlayer();
-            });
+            // this.$http.get('http://127.0.0.1/monitor/room').then((res) => {
+            //     // this.roomArr = res.body.roomArr;
+            //     // this.accountArr = res.body.accountArr;
+            //     // this.acOptionArr = [];
+            //     // for (var i = 0; i < this.accountArr.length; i++) {
+            //     //     var acObj = this.accountArr[i];
+            //     //     this.acOptionArr.push({text: acObj.name, value: acObj});
+            //     // }
+            //     this.updateAccountOption(res.body.accountArr);
+            //     // this.initWCPlayer();
+            // });
         },
         updateAccountOption: function (accountArr) {
             this.accountArr = accountArr;

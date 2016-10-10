@@ -1,7 +1,6 @@
 import {ServerConf} from "./Env";
 import {monitorRouter} from "./router/MonitorRouter";
 
-var dataObj: any;
 /**
  * WebServer
  */
