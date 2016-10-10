@@ -22,6 +22,11 @@ export var monitor = {
         console.log('mounted!');
         this.getRoomInfo();
         this.getTopicInfo();
+        // $(document).ready(function(){
+        //     $('.collapsible').collapsible({
+        //         accordion : true // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+        //     });
+        // });
     },
     methods: {
         onSelectTopic: function (topicId) {
@@ -46,7 +51,8 @@ export var monitor = {
                     else
                         disactTopic.push(topicObj);
                 }
-                this.topicArr = actTopic.concat(disactTopic);
+                this.topicArr = actTopic.concat();
+                // this.topicArr = actTopic.concat(disactTopic);
 
                 console.log('topicInfo', this.topicArr);
             });

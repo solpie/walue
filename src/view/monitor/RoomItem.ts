@@ -43,7 +43,6 @@ export var RoomItemView = {
             }
         },
         onSendDmk: function (e) {
-
             // var socket = io('http://localhost');
             // socket.on('news', function (data) {
             //     console.log(data);
@@ -56,32 +55,30 @@ export var RoomItemView = {
                 // ac = acObj.name;
                 // pw = acObj.pw;
                 // token = acObj.token;
-                var packMsg = packDmk(this.dmkContent, null);
-                this.dmkContent = '';
-                if (this.roomInfo.chat) {
-                    if (!websocket) {
-                        websocket = new WebSocket(this.roomInfo.chat);
-                        websocket.binaryType = "arraybuffer";
-                        websocket.onopen = function (evt) {
-                            console.log('websocket open', packMsg);
-                            websocket.send(packMsg);
-                            // websocket.close();
-                        };
-                        websocket.onmessage = this.onWebSocketMsg;
-                    }
-                    else {
-                        websocket.send(packMsg);
-                    }
+                if (websocket) {
+                    var packMsg = packDmk(this.dmkContent, null);
+                    websocket.send(packMsg);
+                    this.dmkContent = '';
+                }
+                else {
+                    alert('发送失败：无法连接弹幕服务器');
                 }
             }
         },
+
         onWebSocketMsg: function (evt) {
             console.log(evt);
             var dmkContent = decodeMsg(evt.data);
             if (!this.dmkArr)
                 this.dmkArr = '';
             if (dmkContent)
-                this.dmkArr += dmkContent + '\n'
+                this.dmkArr += ":" + dmkContent + '\n';
+            // for (var i = 0; i < this.dmkArr.length; i++) {
+            //     var obj = this.dmkArr[i];
+            //
+            // }
+            var $textarea = $(this.$el).find("textarea")[0];
+            $textarea.scrollTop = $textarea.scrollHeight;
         },
         onAcSelected: function () {
             var acObj = this.acSelected,
@@ -99,12 +96,27 @@ export var RoomItemView = {
             }
             console.log(ac, pw, token);
         },
+        initChat: function () {
+            if (this.roomInfo.chat && !websocket) {
+                websocket = new WebSocket(this.roomInfo.chat);
+                websocket.binaryType = "arraybuffer";
+                websocket.onopen = function (evt) {
+                    console.log('websocket open');
+                    // websocket.close();
+                };
+                websocket.onmessage = this.onWebSocketMsg;
+            }
+        },
         onOpenRoom: function (val, rtmp) {
             console.log('onOpenRoom', val, rtmp);
             if (!this.player) {
                 this.initPlayer();
             }
+            this.initChat();
+            // this.player.clearPlaylist(rtmp);
             this.player.addPlaylist(rtmp);
+            // this.player.stop();
+            // this.player.play(rtmp);
         }
     }
 };

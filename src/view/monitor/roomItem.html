@@ -6,21 +6,30 @@
         <div class="row">{{roomInfo.title}} {{roomInfo.mc}}
             <a href="#" @click="onOpenRoom(idx,roomInfo.rtmp)">{{roomInfo.rtmp}}</a>
         </div>
-        帐号： <select class="browser-default" v-model="acSelected" @change="onAcSelected"
-                    style="width: 150px">
-        <option v-for="option in acOptionArr" v-bind:value="option.value">
-            {{ option.text }}
-        </option>
-    </select>
-        <span>{{acSelected?acSelected.name:''}}</span>
-        <input class="DmkInput input-field" @keyup.enter="onInputEnter" v-model="dmkContent"
-               style="width: 700px">
-        <!--<div class="input-field col s6" @keyup.enter="onSendDmk" v-model="dmkContent">-->
-        <!--<input id="input_text" type="text" length="10">-->
-        <!--<label for="input_text">输入弹幕</label>-->
-        <!--</div>-->
-        <a class="waves-effect waves-light btn" style="height: 35px"
-           @click="onSendDmk">发送</a>
-        <div class="row"><textarea style="height:240px" v-model="dmkArr"></textarea></div>
+        <div class="row">
+            <div class="col">
+                <a class="waves-effect waves-light btn" style="height: 35px"
+                   @click="onSendDmk">发送</a>
+            </div>
+            <div class="col">
+                帐号：
+                <select class="browser-default" v-model="acSelected" @change="onAcSelected"
+                        style="width: 150px">
+                    <option v-for="option in acOptionArr" v-bind:value="option.value">
+                        {{ option.text }}
+                    </option>
+                </select>
+                <span>{{acSelected?acSelected.name:''}}</span>
+                <textarea style="height:240px;width: 700px" v-model="dmkArr"></textarea>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <input class="DmkInput input-field" @keyup.enter="onInputEnter" v-model="dmkContent"
+                   style="width: 700px">
+            <a class="waves-effect waves-light btn" style="height: 35px"
+               @click="onSendDmk">发送</a>
+        </div>
     </div>
 </div>

@@ -54,7 +54,7 @@ var getTopic = (callback?, cursor?, topicArrPre?)=> {
             var hasMore = res1.body.result.cursor.hasMore;
             var cursor = res1.body.result.cursor;
             if (res1.body.success) {
-                console.log(topics[0]);
+                // console.log(topics[0]);
                 for (var i = 0; i < topics.length; i++) {
                     var obj = topics[i];
                     var topicInfo = new TopicInfo();
@@ -63,6 +63,7 @@ var getTopic = (callback?, cursor?, topicArrPre?)=> {
                     topicInfo.liveCount = obj.count.live;
                     topicInfo.viewCount = obj.count.view;
                     topicInfo.hasActiveLive = obj.hasActiveLive;
+                    console.log('hasActiveLive', topicInfo.hasActiveLive, topicInfo.id);
                     topicArr.push(topicInfo);
                     // console.log('id', obj.id, 'content:', obj.content);
                 }
@@ -85,7 +86,7 @@ var getLive = (topicId, callback?)=> {
     unirest.post(liveUrl)
         .headers({'Accept': 'application/json', 'Content-Type': 'application/json'})
         .end((res2)=> {
-            console.log(res2.body);
+            // console.log(res2.body);
             if (res2.body.success) {
                 var lives = res2.body.result.lives;
                 var hasMore = res2.body.result.cursor.hasMore;

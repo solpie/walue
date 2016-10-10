@@ -11,7 +11,23 @@
             </vue>
         </div>
     </div>
-    <div class="card-panel grey lighten-3 col" style="position: absolute;left: 270px;">
+    <div class="card-panel grey lighten-3 col" style="position: absolute;left: 270px;width: 900px">
+
+        <!--<ul class="collapsible" data-collapsible="accordion">-->
+            <!--<li>-->
+                <!--<div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>-->
+                <!--<div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<div class="collapsible-header"><i class="material-icons">place</i>Second</div>-->
+                <!--<div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>-->
+                <!--<div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>-->
+            <!--</li>-->
+        <!--</ul>-->
+
         <vue class="row" v-for="(roomInfo, index) in roomArr">
             <roomItem :idx="index"
                       :roomInfo='roomInfo'
