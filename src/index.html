@@ -7,7 +7,11 @@
 </head>
 <body>
 <div id="app">
-    <router-view></router-view>
+    <!--<NavBar class="top-nav" :active="active"></NavBar>-->
+    <router-view name="Navbar" :active="active"></router-view>
+    <div class="" style="width:100%">
+        <router-view></router-view>
+    </div>
 </div>
 <script src="/resources/app/static/js/socket.io-1.4.5.min.js"></script>
 <script src="/resources/app/static/js/vue/vue.min.js"></script>

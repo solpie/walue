@@ -2,23 +2,31 @@ import {RoomItemView} from "./RoomItem";
 import {TopicItemView} from "./TopicItem";
 import {descendingProp} from "../../utils/JsFunc";
 import {monitorModel} from "../../model/MonitorModel";
+import {Navbar} from "../navbar/Navbar";
 // import {ToppicItem2} from './TopicItem2.vue'
 // var ToppicItem2 = require('./TopicItem2.vue');
+var monitorVersion = '0.10.12.1';
 var $ = require("jquery");
 var isInitWCPlayer = false;
-export var monitor = {
+export var MonitorView = {
     // camelCase in JavaScript
     props: [
         'accountArr',
         'acOptionArr',
         'topicArr',
+        'vlcPath',
         'roomArr'
     ],
     template: require('./monitor.html'),
-    components: {'roomItem': RoomItemView, 'topicItem': TopicItemView},
+    components: {
+        'roomItem': RoomItemView,
+        'Navbar': Navbar,
+        'topicItem': TopicItemView},
     created: function () {
-        console.log('create!');
+        console.log('create!', monitorVersion);
+        this.vlcPath = process.env['VLC_PLUGIN_PATH'];
     },
+
     mounted: function () {
         console.log('mounted!');
         this.getRoomInfo();

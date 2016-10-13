@@ -3,14 +3,6 @@ var $ = require("jquery");
 declare var io: any;
 var websocket: any;
 
-declare var ServerConf;
-
-// var ProtoBuf = require("protobufjs");
-// var builder = ProtoBuf.newBuilder({convertFieldsToCamelCase: true});
-// ProtoBuf.loadProtoFile("resources/app/static/pb/live_websocket.proto", builder);
-// var root = builder.build();
-// var dmk = new root.Danmaku();
-// console.log('dmk pb', dmk, dmk.encode(), dmk.encode().toArrayBuffer());
 
 export var RoomItemView = {
     props: {
@@ -21,11 +13,18 @@ export var RoomItemView = {
         acSelected: {},
         dmkContent: {},
         dmkArr: {},
+        videoType: {},//1 live 2 flv
         chat: {},//websocket url
         roomInfo: {}
     },
     template: require('./roomItem.html'),
     methods: {
+        created: function () {
+            console.log('created room', this.roomInfo);
+        },
+        mounted: function () {
+            console.log('mounted room', this.roomInfo);
+        },
         initPlayer: function () {
             var $item = $(this.$el).find(".WCPlayer")[0];
             var playerId = 'player' + this.idx;

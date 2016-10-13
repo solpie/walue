@@ -7,22 +7,12 @@ console.log(process.execPath);
 var win: any;
 var isDev;
 isDev = /[\\/]projects[\\/]/.test(process.execPath);
+// isDev = false;
 var conf = {width: 1600, height: 900};
 function onReady() {
-    // initEnv(()=> {
-    //     if (ServerConf.isDev)
-    //         process.env['VLC_PLUGIN_PATH'] = '.\\node_modules\\wcjs-prebuilt\\bin\\plugins';
-    //     else
-    //         process.env['VLC_PLUGIN_PATH'] = require('path').join(process.execPath, 'resources\\app\\node_modules\\wcjs-prebuilt\\plugins');
-    //     console.log("VLC_PLUGIN_PATH:1 ", process.env['VLC_PLUGIN_PATH']);
-    //     // if (!ServerConf.isClient)
-    //     //     webServer = new WebServer(openWin);
-    // });
-
-    if (isDev)
-        process.env['VLC_PLUGIN_PATH'] = '.\\node_modules\\wcjs-prebuilt\\bin\\plugins';
-    else
-        process.env['VLC_PLUGIN_PATH'] = require('path').join(process.execPath, 'resources\\app\\node_modules\\wcjs-prebuilt\\plugins');
+    process.env['VLC_PLUGIN_PATH'] = '.\\node_modules\\wcjs-prebuilt\\bin\\plugins';
+    // else
+    //     process.env['VLC_PLUGIN_PATH'] = require('path').join(process.execPath, '..\\..\\..\\wcjs-prebuilt\\plugins');
     console.log("VLC_PLUGIN_PATH:1 ", process.env['VLC_PLUGIN_PATH']);
     // process.env['VLC_PLUGIN_PATH'] = require('path').join(process.execPath, 'resources\\app\\node_modules\\wcjs-prebuilt\\plugins');
     console.log('onReady');

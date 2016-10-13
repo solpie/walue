@@ -4,7 +4,7 @@ var path = require('path');
 module.exports = {
     entry: {
         "main": "./src/main.ts",//electron default entry index.js if no package.json
-        "static/monitor/index": "./src/view/monitor/index.ts"
+        "static/monitor/index": "./src/view/index.ts"
     },
     target: "electron",
     externals: [nodeExternals()],

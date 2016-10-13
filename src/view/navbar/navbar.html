@@ -1,0 +1,16 @@
+<div class="navbar-fixed">
+    <nav>
+        <div class="nav-wrapper indigo">
+            <ul class="left hide-on-med-and-down" style="display: block">
+                <li :class="{active: active === ''}">
+                    <router-link :to="{ name: 'home'}">Home</router-link>
+                </li>
+            </ul>
+            <ul class="right hide-on-med-and-down">
+                <li :class="{active: active === 'setting'}">
+                    <router-link :to="{ name: 'setting'}">setting</router-link>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
