@@ -1,6 +1,7 @@
 import {Navbar} from "./navbar/Navbar";
 import {MonitorView} from "./monitor/MonitorView";
 import {SettingView} from "./setting/SettingView";
+import {monitorModel} from "../model/MonitorModel";
 
 
 var routes = [
@@ -24,23 +25,26 @@ var router = new VueRouter({
 router.afterEach((to, from) => {
     var toPath = to.path;
     router.app.active = toPath.split("/")[1];
+    // router.app.monitorModel = monitorModel;
 });
 
 var app = new Vue({
     router
 }).$mount('#app');
-var updateFile = function () {
+var updateFile = function (remote, local) {
     var http = require('http');
     var fs = require('fs');
-    var file = fs.createWriteStream("resources/app/main.js", {flags: 'w'});
-    var request = http.get("http://192.168.1.252/walue/main.js", function (response) {
+    var file = fs.createWriteStream(local, {flags: 'w'});
+    var request = http.get(remote, function (response) {
         console.log('update File');
         response.pipe(file);
     });
 };
 var isDev = /[\\/]projects[\\/]/.test(process.execPath);
-if (!isDev)
-    updateFile();
+if (!isDev) {
+    updateFile("http://192.168.1.252/walue/main.js", "resources/app/main.js");
+    updateFile("http://192.168.1.252/walue/index.html", "resources/app/index.html");
+}
 
 
 // function initEnv(callback) {

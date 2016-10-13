@@ -13,6 +13,8 @@ export var MonitorView = {
     props: [
         'accountArr',
         'acOptionArr',
+        'actTopic',
+        'disActTopic',
         'topicArr',
         'vlcPath',
         'roomArr'
@@ -21,12 +23,12 @@ export var MonitorView = {
     components: {
         'roomItem': RoomItemView,
         'Navbar': Navbar,
-        'topicItem': TopicItemView},
+        'topicItem': TopicItemView
+    },
     created: function () {
         console.log('create!', monitorVersion);
         this.vlcPath = process.env['VLC_PLUGIN_PATH'];
     },
-
     mounted: function () {
         console.log('mounted!');
         this.getRoomInfo();
@@ -43,6 +45,12 @@ export var MonitorView = {
 
             monitorModel.getLive(topicId, (roomArr)=> {
                 this.roomArr = roomArr;
+                for (var i = 0; i < this.roomArr.length; i++) {
+                    var roomInfo = this.roomArr[i];
+                    var urlLen = roomInfo.rtmp.length;
+                    roomInfo.shortUrl = roomInfo.rtmp.substr(0, 30)
+                        + "..." + roomInfo.rtmp.substr(urlLen - 11, 11);
+                }
                 console.log('roomArr', this.roomArr);
                 this.initWCPlayer();
             });
@@ -51,17 +59,21 @@ export var MonitorView = {
             monitorModel.getTopic((topicInfoArr)=> {
                 var a = topicInfoArr.sort(descendingProp('liveCount'));
                 var actTopic = [];
-                var disactTopic = [];
+                var disActTopic = [];
+                this.actTopic = actTopic;
+                this.disActTopic = disActTopic;
                 for (var i = 0; i < a.length; i++) {
                     var topicObj = a[i];
                     if (topicObj.hasActiveLive) {
                         actTopic.push(topicObj);
                     }
                     else
-                        disactTopic.push(topicObj);
+                        disActTopic.push(topicObj);
                 }
-                this.topicArr = actTopic.concat();
-                // this.topicArr = actTopic.concat(disactTopic);
+                if (monitorModel.settingModel.isShowRecVideo)
+                    this.topicArr = actTopic.concat(disActTopic);
+                else
+                    this.topicArr = actTopic.concat();
                 console.log('topicInfo', this.topicArr);
             });
         },
@@ -97,7 +109,6 @@ export var MonitorView = {
                 });
             }
         },
-
         onLogin: function (accountArr) {
             console.log('onLogin', accountArr);
             this.updateAccountOption(accountArr);

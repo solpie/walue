@@ -1,4 +1,5 @@
 import {packDmk, decodeMsg} from "../../model/DmkInfo";
+import {monitorModel} from "../../model/MonitorModel";
 var $ = require("jquery");
 declare var io: any;
 var websocket: any;
@@ -15,25 +16,33 @@ export var RoomItemView = {
         dmkArr: {},
         videoType: {},//1 live 2 flv
         chat: {},//websocket url
+        shortUrl: {},//websocket url
         roomInfo: {}
     },
     template: require('./roomItem.html'),
+    mounted: function () {
+        console.log('created room', this.roomInfo.shortUrl);
+        if (this.player) {
+            this.player.clearPlaylist();
+            this.player.stop();
+        }
+    },
     methods: {
-        created: function () {
-            console.log('created room', this.roomInfo);
-        },
-        mounted: function () {
-            console.log('mounted room', this.roomInfo);
-        },
         initPlayer: function () {
             var $item = $(this.$el).find(".WCPlayer")[0];
             var playerId = 'player' + this.idx;
             $($item).attr('id', playerId);
             console.log("room item:", $item);
             var wjs = require("wcjs-player");
+            var isRotate = monitorModel.settingModel;
             this.player = new wjs("#" + playerId).addPlayer({
                 autoplay: true,
-                wcjs: require('webchimera.js')
+                wcjs: require('webchimera.js'),
+                // vlcArgs: ["--network-caching=500",'--vout-filter=transform',"--transform-type=90"]
+                // vlcArgs: ["--network-caching=500"],
+                vlcArgs: ["--network-caching=500", '--vout-filter=transform',
+                    "--transform-type=90",
+                    "--video-filter=transform{true}"]
             });
         },
         onInputEnter: function (e) {
@@ -110,6 +119,9 @@ export var RoomItemView = {
             console.log('onOpenRoom', val, rtmp);
             if (!this.player) {
                 this.initPlayer();
+            }
+            else {
+                this.player.stop();
             }
             this.initChat();
             // this.player.clearPlaylist(rtmp);

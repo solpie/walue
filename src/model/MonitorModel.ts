@@ -1,10 +1,14 @@
 import {TopicInfo} from "./TopicInfo";
 import {RoomInfo} from "./RoomInfo";
 var unirest = require('unirest');
-
+class SettingModel {
+    isShowRecVideo: boolean = false;
+}
 export class MonitorModel {
-    constructor() {
+    settingModel;
 
+    constructor() {
+        this.settingModel = new SettingModel();
     }
 
     getTopic(callback?, cursor?, topicArrPre?) {

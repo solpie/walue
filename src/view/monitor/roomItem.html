@@ -1,10 +1,11 @@
 <div class="row">
     <div class="col">
-        <div class="WCPlayer" style="width: 250px;height:440px"></div>
+        <div class="WCPlayer" style="width: 440px;height:250px"></div>
+        <!--<div class="WCPlayer" style="width: 250px;height:440px"></div>-->
     </div>
     <div class="col">
-        <div class="row">{{roomInfo.title}} {{roomInfo.mc}}
-            <a href="#" @click="onOpenRoom(idx,roomInfo.rtmp)" title="打开直播">{{roomInfo.rtmp}}</a>
+        <div class="row">直播标题：{{roomInfo.title}} 主播：{{roomInfo.mc}}
+            <a href="#" @click="onOpenRoom(idx,roomInfo.rtmp)" title="打开直播">{{ roomInfo.shortUrl}}</a>
             <!--<a href="#" @click="onOpenRoom(idx,roomInfo.rtmp)">{{(roomInfo.rtmp.search('flv')>-1)?'flv':'live';}}</a>-->
         </div>
         <div class="row">
