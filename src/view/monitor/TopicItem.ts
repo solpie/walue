@@ -7,7 +7,7 @@ export var TopicItemView = {
     methods: {
         onClk: function (topicId) {
             console.log('select topic id:', topicId);
-            this.$emit('select',topicId);
+            this.$emit('select', topicId);
         }
     }
 };

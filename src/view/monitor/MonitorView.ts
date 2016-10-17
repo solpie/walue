@@ -3,9 +3,14 @@ import {TopicItemView} from "./TopicItem";
 import {descendingProp} from "../../utils/JsFunc";
 import {monitorModel} from "../../model/MonitorModel";
 import {Navbar} from "../navbar/Navbar";
-// import {ToppicItem2} from './TopicItem2.vue'
-// var ToppicItem2 = require('./TopicItem2.vue');
+import {MenuModel} from "../../model/MenuModel";
+import {PlayerItemView} from "./PlayerItem";
+
+
 var monitorVersion = '0.10.12.1';
+
+export var menuModel = new MenuModel();
+
 var $ = require("jquery");
 var isInitWCPlayer = false;
 export var MonitorView = {
@@ -16,11 +21,15 @@ export var MonitorView = {
         'actTopic',
         'disActTopic',
         'topicArr',
+        'commitContent',
+        'curTopicId',
         'vlcPath',
+        'playerArr',
         'roomArr'
     ],
     template: require('./monitor.html'),
     components: {
+        'playerItem': PlayerItemView,
         'roomItem': RoomItemView,
         'Navbar': Navbar,
         'topicItem': TopicItemView
@@ -33,6 +42,7 @@ export var MonitorView = {
         console.log('mounted!');
         this.getRoomInfo();
         this.getTopicInfo();
+        // $(".dropdown-button").dropdown();
         // $(document).ready(function(){
         //     $('.collapsible').collapsible({
         //         accordion : true // A setting that changes the collapsible behavior to expandable instead of the default accordion style
@@ -40,9 +50,16 @@ export var MonitorView = {
         // });
     },
     methods: {
-        onSelectTopic: function (topicId) {
-            console.log('onSelectTopic', topicId);
+        onAddRoom: function () {
 
+        },
+        onSendCommit: function () {
+            console.log('onSendCommit', this.commitContent);
+            // MonitorModel.sendCommit();
+        },
+        onSelectTopic: function (topicId) {
+            this.curTopicId = topicId;
+            console.log('onSelectTopic', topicId);
             monitorModel.getLive(topicId, (roomArr)=> {
                 this.roomArr = roomArr;
                 for (var i = 0; i < this.roomArr.length; i++) {
@@ -74,21 +91,11 @@ export var MonitorView = {
                     this.topicArr = actTopic.concat(disActTopic);
                 else
                     this.topicArr = actTopic.concat();
+                menuModel.setTopicArr(this.topicArr);
                 console.log('topicInfo', this.topicArr);
             });
         },
         getRoomInfo: function () {
-            // this.$http.get('http://127.0.0.1/monitor/room').then((res) => {
-            //     // this.roomArr = res.body.roomArr;
-            //     // this.accountArr = res.body.accountArr;
-            //     // this.acOptionArr = [];
-            //     // for (var i = 0; i < this.accountArr.length; i++) {
-            //     //     var acObj = this.accountArr[i];
-            //     //     this.acOptionArr.push({text: acObj.name, value: acObj});
-            //     // }
-            //     this.updateAccountOption(res.body.accountArr);
-            //     // this.initWCPlayer();
-            // });
         },
         updateAccountOption: function (accountArr) {
             this.accountArr = accountArr;
@@ -112,6 +119,13 @@ export var MonitorView = {
         onLogin: function (accountArr) {
             console.log('onLogin', accountArr);
             this.updateAccountOption(accountArr);
+        },
+        onOpenRoom: function (roomInfo) {
+            console.log('onOpenRoom', roomInfo);
+            if (!this.playerArr)
+                this.playerArr = [];
+            this.playerArr.push(roomInfo);
+            this.roomArr = [];
         },
         onRefreshRoom: function () {
             console.log('onRefreshRoom');

@@ -1,37 +1,3 @@
-<div class="row">
-    <div class="col">
-        <div class="WCPlayer" style="width: 440px;height:250px"></div>
-        <!--<div class="WCPlayer" style="width: 250px;height:440px"></div>-->
-    </div>
-    <div class="col">
-        <div class="row">直播标题：{{roomInfo.title}} 主播：{{roomInfo.mc}}
-            <a href="#" @click="onOpenRoom(idx,roomInfo.rtmp)" title="打开直播">{{ roomInfo.shortUrl}}</a>
-            <!--<a href="#" @click="onOpenRoom(idx,roomInfo.rtmp)">{{(roomInfo.rtmp.search('flv')>-1)?'flv':'live';}}</a>-->
-        </div>
-        <div class="row">
-            <div class="col">
-                <a class="waves-effect waves-light btn" style="height: 35px"
-                   @click="onSendDmk">发送</a>
-            </div>
-            <div class="col">
-                帐号：
-                <select class="browser-default" v-model="acSelected" @change="onAcSelected"
-                        style="width: 150px">
-                    <option v-for="option in acOptionArr" v-bind:value="option.value">
-                        {{ option.text }}
-                    </option>
-                </select>
-                <span>{{acSelected?acSelected.name:''}}</span>
-                <textarea style="height:240px;width: 700px" v-model="dmkArr"></textarea>
-            </div>
-
-        </div>
-
-        <div class="row">
-            <input class="DmkInput input-field" @keyup.enter="onInputEnter" v-model="dmkContent"
-                   style="width: 700px">
-            <a class="waves-effect waves-light btn" style="height: 35px"
-               @click="onSendDmk">发送</a>
-        </div>
-    </div>
+<div class="row">直播标题：{{roomInfo.title}} 主播：{{roomInfo.mc}}
+    <a href="#" @click="onOpenRoom(idx,roomInfo.rtmp)" title="打开直播">{{ roomInfo.shortUrl}}</a>
 </div>

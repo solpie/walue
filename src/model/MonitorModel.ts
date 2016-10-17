@@ -11,6 +11,27 @@ export class MonitorModel {
         this.settingModel = new SettingModel();
     }
 
+    getTopicLives(topicArr, callback) {
+        var for1 = (idx, topicArr)=> {
+            if (idx < topicArr.length) {
+                monitorModel.getLive(topicArr[idx].id, (roomArr)=> {
+                    topicArr[idx].roomArr = roomArr;
+                    for (var k = 0; k < roomArr.length; k++) {
+                        var roomInfo = roomArr[k];
+                        var urlLen = roomInfo.rtmp.length;
+                        roomInfo.shortUrl = roomInfo.rtmp.substr(0, 30)
+                            + "..." + roomInfo.rtmp.substr(urlLen - 11, 11);
+                    }
+                    for1(idx + 1, topicArr);
+                });
+            }
+            else {
+                callback(topicArr);
+            }
+        };
+        for1(0, topicArr);
+    }
+
     getTopic(callback?, cursor?, topicArrPre?) {
         var topicArr = [];
         if (topicArrPre)
@@ -77,5 +98,21 @@ export class MonitorModel {
                 else throw "get /live_list failed";
             });
     };
+
+    static sendCommit(token, topicId, commit) {
+        var apiUrl = `https://api.weilutv.com/comment/t${topicId}/post/`;
+        unirest.post(apiUrl)
+            .headers({'Accept': 'application/json', 'Content-Type': 'application/json', token: token})
+            .send({content: commit})
+            .end((res)=> {
+                // console.log(res2.body);
+                if (res.body.success) {
+                }
+                else throw "error " + apiUrl;
+            });
+
+        // POST /comment/t123/post
+        // {"content": "nihao"}
+    }
 }
 export var monitorModel = new MonitorModel();

@@ -1,14 +1,5 @@
 <div class="container">
-    <!--<ul class="tabs">-->
-    <!--<li class="tab col s3"><a class="active" href="!#tab1">Topic</a></li>-->
-    <!--<li class="tab col s3"><a href="!#tab2">Room</a></li>-->
-    <!--</ul>-->
-    <!--<div id="tab1">-->
-    <!--</div>-->
-    <!--<div id="tab2">-->
-    <!--<div>{{vlcPath}}</div>-->
-    <!--</div>-->
-    <div class="card-panel grey lighten-3 col" style="width: 250px;position: absolute;left: 0;">
+    <div style="width: 250px;height:800px;overflow-y:scroll;position: absolute;left: 0;">
         <div class="collection">
             <vue v-for="(topic,index) in topicArr">
                 <topicItem :id="topic.id" :topic="topic"
@@ -16,31 +7,42 @@
             </vue>
         </div>
     </div>
+    <!--<ul class="collection">-->
+    <!--<li>-->
+    <!--<a @click="onAddRoom" class="modal-action waves-effect waves-green btn-flat">-->
+    <!--<i class="material-icons">toc</i>-->
+    <!--</a>-->
+    <!--</li>-->
+    <!--</ul>-->
+
     <div class="card-panel grey lighten-3 col" style="position: absolute;left: 270px;width: 1200px">
+        <vue class="row" v-for="(roomInfo, index) in playerArr">
+            <playerItem :idx="index"
+                        :roomInfo='roomInfo'
+                        :accountArr='accountArr'
+                        :acOptionArr='acOptionArr'
+                        v-on:login="onLogin">
+            </playerItem>
+        </vue>
+    </div>
 
-        <!--<ul class="collapsible" data-collapsible="accordion">-->
-        <!--<li>-->
-        <!--<div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>-->
-        <!--<div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>-->
-        <!--</li>-->
-        <!--<li>-->
-        <!--<div class="collapsible-header"><i class="material-icons">place</i>Second</div>-->
-        <!--<div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>-->
-        <!--</li>-->
-        <!--<li>-->
-        <!--<div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>-->
-        <!--<div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>-->
-        <!--</li>-->
-        <!--</ul>-->
-
-        <vue class="row" v-for="(roomInfo, index) in roomArr">
+    <div class="collection" style="position: absolute;left: 270px;width: 800px">
+        <li class="collection-item" v-for="(roomInfo, index) in roomArr">
+            <!--<div v-if="index==0" class="row">-->
+            <!--话题评论：<input class="DmkInput input-field" @keyup.enter="onCommitInputEnter" v-model="commitContent"-->
+            <!--style="width: 700px">-->
+            <!--<a class="waves-effect waves-light btn" style="height: 35px"-->
+            <!--@click="onSendCommit">发送</a>-->
+            <!--</div>-->
             <roomItem :idx="index"
                       :roomInfo='roomInfo'
                       :accountArr='accountArr'
                       :acOptionArr='acOptionArr'
-                      v-on:login="onLogin">
+                      v-on:login="onLogin"
+                      v-on:openRoom="onOpenRoom"
+            >
             </roomItem>
-        </vue>
+        </li>
     </div>
 </div>
 

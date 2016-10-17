@@ -1,8 +1,8 @@
 import {Navbar} from "./navbar/Navbar";
 import {MonitorView} from "./monitor/MonitorView";
 import {SettingView} from "./setting/SettingView";
-import {monitorModel} from "../model/MonitorModel";
-
+//////////////
+///////////////////
 
 var routes = [
     {
@@ -42,10 +42,17 @@ var updateFile = function (remote, local) {
 };
 var isDev = /[\\/]projects[\\/]/.test(process.execPath);
 if (!isDev) {
+    ///resources/app/static/fonts/material-design-icons/Material-Design-Icons.woff2
     updateFile("http://192.168.1.252/walue/main.js", "resources/app/main.js");
     updateFile("http://192.168.1.252/walue/index.html", "resources/app/index.html");
 }
 
+
+
+// window.addEventListener('contextmenu', function (e) {
+//     e.preventDefault();
+//     menu.popup(remote.getCurrentWindow());
+// }, false);
 
 // function initEnv(callback) {
 //     var fs = require('fs');

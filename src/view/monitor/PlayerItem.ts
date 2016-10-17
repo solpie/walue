@@ -5,7 +5,7 @@ declare var io: any;
 var websocket: any;
 
 
-export var RoomItemView = {
+export var PlayerItemView = {
     props: {
         idx: {},
         player: {},
@@ -20,13 +20,14 @@ export var RoomItemView = {
         shortUrl: {},//websocket url
         roomInfo: {}
     },
-    template: require('./roomItem.html'),
+    template: require('./playerItem.html'),
     mounted: function () {
-        console.log('created room', this.roomInfo.shortUrl);
-        if (this.player) {
-            this.player.clearPlaylist();
-            this.player.stop();
-        }
+        console.log('created player', this.roomInfo.shortUrl);
+        // if (this.player) {
+        //     this.player.clearPlaylist();
+        //     this.player.stop();
+        // }
+        this.initPlayer();
     },
     methods: {
         initPlayer: function () {
@@ -79,6 +80,7 @@ export var RoomItemView = {
                 }
             }
         },
+
         onWebSocketMsg: function (evt) {
             console.log(evt);
             var dmkContent = decodeMsg(evt.data);
@@ -122,16 +124,15 @@ export var RoomItemView = {
         },
         onOpenRoom: function (val, rtmp) {
             console.log('onOpenRoom', val, rtmp);
-            // if (!this.player) {
-            //     this.initPlayer();
-            // }
-            // else {
-            //     this.player.stop();
-            // }
-            // this.initChat();
+            if (!this.player) {
+                this.initPlayer();
+            }
+            else {
+                this.player.stop();
+            }
+            this.initChat();
             // this.player.clearPlaylist(rtmp);
-            // this.player.addPlaylist(rtmp);
-            this.$emit('openRoom',this.roomInfo);
+            this.player.addPlaylist(rtmp);
             // this.player.stop();
             // this.player.play(rtmp);
         }
