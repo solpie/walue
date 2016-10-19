@@ -1,5 +1,17 @@
-<div class="container">
-    <div style="width: 250px;height:800px;overflow-y:scroll;position: absolute;left: 0;">
+<div>
+    <div style="width: 250px;
+    height:800px;
+    overflow-y:scroll;
+    overflow-x:hidden;
+    position: absolute;
+    left: 0;">
+        <div class="row">
+            <a class="waves-effect waves-light btn" style="height: 35px"
+               @click="onRefreshTopic">刷新</a>
+            <input type="checkbox" id="checkbox1" v-model="isShowRecVideo"/>
+            <label for="checkbox1">显示录制视频</label>
+        </div>
+
         <div class="collection">
             <vue v-for="(topic,index) in topicArr">
                 <topicItem :id="topic.id" :topic="topic"
@@ -15,8 +27,11 @@
     <!--</li>-->
     <!--</ul>-->
 
-    <div class="card-panel grey lighten-3 col" style="position: absolute;left: 270px;width: 1200px">
-        <vue class="row" v-for="(roomInfo, index) in playerArr">
+    <div style="position: absolute;
+         display: inline-flex;
+         left: 270px;
+      ">
+        <vue v-for="(roomInfo, index) in playerArr">
             <playerItem :idx="index"
                         :roomInfo='roomInfo'
                         :accountArr='accountArr'
@@ -26,14 +41,8 @@
         </vue>
     </div>
 
-    <div class="collection" style="position: absolute;left: 270px;width: 800px">
-        <li class="collection-item" v-for="(roomInfo, index) in roomArr">
-            <!--<div v-if="index==0" class="row">-->
-            <!--话题评论：<input class="DmkInput input-field" @keyup.enter="onCommitInputEnter" v-model="commitContent"-->
-            <!--style="width: 700px">-->
-            <!--<a class="waves-effect waves-light btn" style="height: 35px"-->
-            <!--@click="onSendCommit">发送</a>-->
-            <!--</div>-->
+    <div id="roomList" class="collection" style="position: absolute;left: 270px;width: 800px">
+        <li class="collection-item" v-for="(roomInfo, index) in roomArr" >
             <roomItem :idx="index"
                       :roomInfo='roomInfo'
                       :accountArr='accountArr'

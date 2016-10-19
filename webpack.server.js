@@ -3,17 +3,18 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 var path = require('path');
 module.exports = {
     entry: {
-        "main": "./src/main.ts",//electron default entry index.js if no package.json
-        "static/monitor/index": "./src/view/index.ts"
+        "main.js": "./src/main.ts",//electron default entry index.js if no package.json
+        "static/monitor/index.js": "./src/view/index.ts",
+        "index2.html": "./src/index.html"
     },
     target: "electron",
     externals: [nodeExternals()],
     output: {
         path: './resources/app',
-        filename: "[name].js"
+        filename: "[name]"
     },
     resolve: {
-        extensions: ["", ".ts", ".tsx", ".js"]
+        extensions: ["", ".ts", ".tsx", ".js",'.html']
     },
     devtool: 'source-map',
     module: {

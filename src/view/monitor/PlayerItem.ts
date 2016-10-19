@@ -28,13 +28,14 @@ export var PlayerItemView = {
         //     this.player.stop();
         // }
         this.initPlayer();
+        this.onOpenRoom();
     },
     methods: {
         initPlayer: function () {
             var $item = $(this.$el).find(".WCPlayer")[0];
             var playerId = 'player' + this.idx;
             $($item).attr('id', playerId);
-            console.log("room item:", $item);
+            console.log("player item:", this.idx);
             var wjs = require("wcjs-player");
             var isRotate = monitorModel.settingModel;
             this.player = new wjs("#" + playerId).addPlayer({
@@ -42,12 +43,11 @@ export var PlayerItemView = {
                 wcjs: require('webchimera.js'),
                 // vlcArgs: ["--network-caching=500",'--vout-filter=transform',"--transform-type=90"]
                 // vlcArgs: ["--network-caching=500"],
-
-
                 // vlcArgs: ["--network-caching=500", '--vout-filter=transform',
                 //     "--transform-type=90",
                 //     "--video-filter=transform{true}"]
             });
+            monitorModel.playerMap[playerId] = this.player;
         },
         onInputEnter: function (e) {
             if (e.key && e.key == "Enter" && e.ctrlKey) {
@@ -122,17 +122,24 @@ export var PlayerItemView = {
                 websocket.onmessage = this.onWebSocketMsg;
             }
         },
-        onOpenRoom: function (val, rtmp) {
-            console.log('onOpenRoom', val, rtmp);
-            if (!this.player) {
-                this.initPlayer();
-            }
-            else {
-                this.player.stop();
-            }
+        onClosePlayer: function () {
+            // if (this.player)
+            var player = monitorModel.playerMap['player' + this.idx];
+            player.clearPlaylist();
+            player.stop();
+            $(this.$el).hide();
+        },
+        onOpenRoom: function () {
+            console.log('onOpenRoom', this.roomInfo.chat, this.roomInfo.rtmp);
+            // if (!this.player) {
+            //     this.initPlayer();
+            // }
+            // else {
+            //     this.player.stop();
+            // }
             this.initChat();
-            // this.player.clearPlaylist(rtmp);
-            this.player.addPlaylist(rtmp);
+            this.player.addPlaylist(this.roomInfo.rtmp);
+            $('#roomList').hide();
             // this.player.stop();
             // this.player.play(rtmp);
         }

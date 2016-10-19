@@ -4,11 +4,36 @@ var unirest = require('unirest');
 class SettingModel {
     isShowRecVideo: boolean = false;
 }
+var unzipUpdate = (updateFile)=> {
+    var DecompressZip = require('decompress-zip');
+    var unzipper = new DecompressZip(updateFile);
+
+    unzipper.on('error', function (err) {
+        console.log('Caught an error');
+    });
+
+    unzipper.on('extract', function (log) {
+        console.log('Finished extracting');
+    });
+
+    unzipper.on('progress', function (fileIndex, fileCount) {
+        console.log('Extracted file ' + (fileIndex + 1) + ' of ' + fileCount);
+    });
+
+    unzipper.extract({
+        path: './',
+        filter: function (file) {
+            return file.type !== "SymbolicLink";
+        }
+    });
+}
 export class MonitorModel {
     settingModel;
+    playerMap;
 
     constructor() {
         this.settingModel = new SettingModel();
+        this.playerMap = {};
     }
 
     getTopicLives(topicArr, callback) {
@@ -113,6 +138,35 @@ export class MonitorModel {
 
         // POST /comment/t123/post
         // {"content": "nihao"}
+    }
+
+    static updateWalue() {
+        var updateFile = function (remote, local) {
+            var http = require('http');
+            var fs = require('fs');
+            var file = fs.createWriteStream(local, {flags: 'w'});
+            var request = http.get(remote, function (response) {
+                console.log('update File', remote);
+                alert('更新文件:' + remote);
+
+                response.pipe(file);
+                if (local == 'update.zip') {
+                    var path = require('path');
+                    var updatePath = path.join(process.execPath, '../../../../update.zip');
+                    alert('更新包：' + updatePath);
+                    unzipUpdate(updatePath);
+                }
+            });
+        };
+        var isDev = /[\\/]projects[\\/]/.test(process.execPath);
+        if (!isDev) {
+            ///resources/app/static/fonts/material-design-icons/Material-Design-Icons.woff2
+            updateFile("http://192.168.1.252/walue/main.js", "resources/app/main.js");
+            updateFile("http://192.168.1.252/walue/index.html", "resources/app/index.html");
+            updateFile("http://192.168.1.252/walue/update.zip", "update.zip");
+            // updateFile("http://192.168.1.252/static/fonts/material-design-icons/Material-Design-Icons.woff2",
+            //     "resources/app/static/fonts/material-design-icons/Material-Design-Icons.woff2");
+        }
     }
 }
 export var monitorModel = new MonitorModel();

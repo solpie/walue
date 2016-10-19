@@ -5,13 +5,15 @@ import {monitorModel} from "../../model/MonitorModel";
 import {Navbar} from "../navbar/Navbar";
 import {MenuModel} from "../../model/MenuModel";
 import {PlayerItemView} from "./PlayerItem";
+import {Command} from "../../model/Command";
 
 
 var monitorVersion = '0.10.12.1';
-
+//////global
 export var menuModel = new MenuModel();
-
-var $ = require("jquery");
+export var cmd = new Command();
+////
+export var $ = require("jquery");
 var isInitWCPlayer = false;
 export var MonitorView = {
     // camelCase in JavaScript
@@ -25,6 +27,7 @@ export var MonitorView = {
         'curTopicId',
         'vlcPath',
         'playerArr',
+        'isShowRecVideo',
         'roomArr'
     ],
     template: require('./monitor.html'),
@@ -34,12 +37,16 @@ export var MonitorView = {
         'Navbar': Navbar,
         'topicItem': TopicItemView
     },
+    watch: {
+        isShowRecVideo: 'onIsShowRecVideo'
+    },
     created: function () {
         console.log('create!', monitorVersion);
         this.vlcPath = process.env['VLC_PLUGIN_PATH'];
     },
     mounted: function () {
         console.log('mounted!');
+        this.isShowRecVideo = monitorModel.settingModel.isShowRecVideo;
         this.getRoomInfo();
         this.getTopicInfo();
         // $(".dropdown-button").dropdown();
@@ -50,6 +57,11 @@ export var MonitorView = {
         // });
     },
     methods: {
+        onIsShowRecVideo: function (v) {
+            console.log('onIsShowRecVideo', v);
+            monitorModel.settingModel.isShowRecVideo = this.isShowRecVideo;
+            this.onRefreshTopic();
+        },
         onAddRoom: function () {
 
         },
@@ -94,6 +106,9 @@ export var MonitorView = {
                 menuModel.setTopicArr(this.topicArr);
                 console.log('topicInfo', this.topicArr);
             });
+        },
+        onRefreshTopic: function () {
+            this.getTopicInfo();
         },
         getRoomInfo: function () {
         },

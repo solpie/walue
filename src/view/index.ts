@@ -31,22 +31,6 @@ router.afterEach((to, from) => {
 var app = new Vue({
     router
 }).$mount('#app');
-var updateFile = function (remote, local) {
-    var http = require('http');
-    var fs = require('fs');
-    var file = fs.createWriteStream(local, {flags: 'w'});
-    var request = http.get(remote, function (response) {
-        console.log('update File');
-        response.pipe(file);
-    });
-};
-var isDev = /[\\/]projects[\\/]/.test(process.execPath);
-if (!isDev) {
-    ///resources/app/static/fonts/material-design-icons/Material-Design-Icons.woff2
-    updateFile("http://192.168.1.252/walue/main.js", "resources/app/main.js");
-    updateFile("http://192.168.1.252/walue/index.html", "resources/app/index.html");
-}
-
 
 
 // window.addEventListener('contextmenu', function (e) {

@@ -1,31 +1,29 @@
-<div class="row">
-    <div class="col">
-        <!--<div class="WCPlayer" style="width: 440px;height:250px"></div>-->
-        <div class="WCPlayer" style="width: 250px;height:440px"></div>
+<div class="card" style="width:250px;margin: 0">
+    <div class="row">{{roomInfo.title}} <br>主播：{{roomInfo.mc}}
+        <a @click="onClosePlayer" class="btn-floating"
+           style="position: absolute;top: 10px;left: 200px">
+            <i class="material-icons">visibility_off</i>
+        </a>
     </div>
-    <div class="col">
-        <div class="row">直播标题：{{roomInfo.title}} 主播：{{roomInfo.mc}}
-            <!--<a href="#" @click="onOpenRoom(idx,roomInfo.rtmp)">{{(roomInfo.rtmp.search('flv')>-1)?'flv':'live';}}</a>-->
-        </div>
-        <div class="row">
-            <div class="col">
-                帐号：
-                <select class="browser-default" v-model="acSelected" @change="onAcSelected"
-                        style="width: 150px">
-                    <option v-for="option in acOptionArr" v-bind:value="option.value">
-                        {{ option.text }}
-                    </option>
-                </select>
-                <span>{{acSelected?acSelected.name:''}}</span>
-                <textarea style="height:240px;width: 700px" v-model="dmkArr"></textarea>
-            </div>
 
+    <div class="WCPlayer" style="width: 250px;height:440px"></div>
+    <div class="col">
+        <div class="row" style="width: 250px;display: inline-flex">
+            帐号：
+            <select class="browser-default" v-model="acSelected" @change="onAcSelected"
+                    style="width: 150px">
+                <option v-for="option in acOptionArr" v-bind:value="option.value">
+                    {{ option.text }}
+                </option>
+            </select>
         </div>
         <div class="row">
-            <input class="DmkInput input-field" @keyup.enter="onInputEnter" v-model="dmkContent"
-                   style="width: 700px">
-            <a class="waves-effect waves-light btn" style="height: 35px"
-               @click="onSendDmk">发送</a>
+            <textarea style="height:120px" v-model="dmkArr" readonly="readonly"></textarea>
+        </div>
+        <div class="row">
+            <input placeholder="ctrl+enter发送弹幕" style="width: 200px" class="DmkInput input-field" @keyup.enter="onInputEnter" v-model="dmkContent">
+            <a class="btn-floating" style="width:35px;height: 35px"
+               @click="onSendDmk"> <i class="material-icons right">send</i></a>
         </div>
     </div>
 </div>

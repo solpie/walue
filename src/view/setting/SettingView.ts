@@ -1,4 +1,4 @@
-import {monitorModel} from "../../model/MonitorModel";
+import {monitorModel, MonitorModel} from "../../model/MonitorModel";
 export var SettingView = {
     props: {
         isShowRecVideo: {}
@@ -15,6 +15,9 @@ export var SettingView = {
         onIsShowRecVideo: function (v) {
             monitorModel.settingModel.isShowRecVideo = this.isShowRecVideo;
             console.log('onIsShowRecVideo', v);
+        },
+        onUpdateWalue: function (v) {
+            MonitorModel.updateWalue();
         }
     }
 };
