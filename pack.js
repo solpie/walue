@@ -7,6 +7,8 @@ var archive = new zip();
 var fileArr = ["resources/app/main.js",
     "resources/app/index.html",
     "resources/app/static/fonts/material-design-icons/Material-Design-Icons.woff2",
+    "resources/app/static/css/general.css",
+    "resources/app/static/js/wcjs-player/index.js",
     "resources/app/static/monitor/index.js"];
 var fArr = [];
 for (var i = 0; i < fileArr.length; i++) {

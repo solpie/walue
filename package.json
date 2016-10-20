@@ -6,7 +6,6 @@
   "dependencies": {
     "electron": "^1.4.2",
     "jquery": "^3.1.1",
-    "node-native-zip": "^1.1.0",
     "protobufjs": "^5.0.1",
     "socket.io": "^1.5.0",
     "unirest": "^0.5.1",
@@ -15,13 +14,19 @@
   },
   "env": "development",
   "devDependencies": {
+    "copy-webpack-plugin": "^3.0.1",
+    "node-native-zip": "^1.1.0",
     "electron-packager": "^8.1.0",
-    "vue-loader": "^9.5.1"
+    "html-loader": "^0.4.4",
+    "source-map-loader": "^0.1.5",
+    "ts-loader": "^0.9.4",
+    "typescript": "^2.0.3",
+    "vue-loader": "^9.7.0"
   },
   "scripts": {
     "app": "electron resources/app",
     "server": "webpack --watch --progress --profile --colors --display-error-details --display-cached --config webpack.server.js",
     "server-build": "webpack --progress --profile --colors --display-error-details --display-cached --config webpack.server.js",
-    "electron-packager": "electron-packager resources/app WeiluTV --ignore=node_modules/electron-* --platform=win32 --arch=x64 --overwrite"
+    "electron-packager": "electron-packager resources/app WeiluTV --ignore=node_modules/electron-* --platform=win32 --arch=x64 --overwrite --ignore=dev-settings --prune"
   }
 }

@@ -2,6 +2,7 @@ import {packDmk, decodeMsg} from "../../model/DmkInfo";
 import {monitorModel} from "../../model/MonitorModel";
 var $ = require("jquery");
 declare var io: any;
+declare var wjs;
 var websocket: any;
 
 
@@ -36,7 +37,7 @@ export var PlayerItemView = {
             var playerId = 'player' + this.idx;
             $($item).attr('id', playerId);
             console.log("player item:", this.idx);
-            var wjs = require("wcjs-player");
+            // var wjs = require('wcjs-player');
             var isRotate = monitorModel.settingModel;
             this.player = new wjs("#" + playerId).addPlayer({
                 autoplay: true,
@@ -47,6 +48,8 @@ export var PlayerItemView = {
                 //     "--transform-type=90",
                 //     "--video-filter=transform{true}"]
             });
+            // $($(this.$el).find('.wcp-vol-control')).off('mouseout');
+            // $(this.$el).off('mouseout', '.wcp-vol-control');
             monitorModel.playerMap[playerId] = this.player;
         },
         onInputEnter: function (e) {

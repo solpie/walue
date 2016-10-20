@@ -46,6 +46,7 @@ module.exports = {
                 from: '**/*', to: 'static/'
             },
             {from: 'src/package.json'},
+            {from: 'src/utils/wcjs-player/index.js',to:'static/js/wcjs-player/'},
             {from: 'src/server.html'},
             {from: 'src/index.html'}
         ])
