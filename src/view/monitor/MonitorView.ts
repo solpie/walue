@@ -12,6 +12,7 @@ var monitorVersion = '0.10.12.1';
 //////global
 export var menuModel = new MenuModel();
 export var cmd = new Command();
+export var wsMap: any = {};
 ////
 export var $ = require("jquery");
 var isInitWCPlayer = false;

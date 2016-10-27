@@ -1,9 +1,10 @@
 import {packDmk, decodeMsg} from "../../model/DmkInfo";
 import {monitorModel} from "../../model/MonitorModel";
+import {wsMap} from "./MonitorView";
 var $ = require("jquery");
 declare var io: any;
 declare var wjs;
-var websocket: any;
+// var websocket: any;
 
 
 export var PlayerItemView = {
@@ -73,9 +74,9 @@ export var PlayerItemView = {
                 // ac = acObj.name;
                 // pw = acObj.pw;
                 // token = acObj.token;
-                if (websocket) {
+                if (wsMap[this.roomInfo.chat]) {
                     var packMsg = packDmk(this.dmkContent, null);
-                    websocket.send(packMsg);
+                    wsMap[this.roomInfo.chat].send(packMsg);
                     this.dmkContent = '';
                 }
                 else {
@@ -85,8 +86,8 @@ export var PlayerItemView = {
         },
 
         onWebSocketMsg: function (evt) {
-            console.log(evt);
             var dmkContent = decodeMsg(evt.data);
+            console.log("onWebSocketMsg", evt, dmkContent);
             if (!this.dmkArr)
                 this.dmkArr = '';
             if (dmkContent)
@@ -115,14 +116,15 @@ export var PlayerItemView = {
             console.log(ac, pw, token);
         },
         initChat: function () {
-            if (this.roomInfo.chat && !websocket) {
-                websocket = new WebSocket(this.roomInfo.chat);
-                websocket.binaryType = "arraybuffer";
-                websocket.onopen = function (evt) {
-                    console.log('websocket open');
-                    // websocket.close();
-                };
-                websocket.onmessage = this.onWebSocketMsg;
+            if (this.roomInfo.chat) {
+                if (!wsMap[this.roomInfo.chat]) {
+                    wsMap[this.roomInfo.chat] = new WebSocket(this.roomInfo.chat);
+                    wsMap[this.roomInfo.chat].binaryType = "arraybuffer";
+                    wsMap[this.roomInfo.chat].onopen = function (evt) {
+                        console.log('websocket open');
+                    };
+                }
+                wsMap[this.roomInfo.chat].onmessage = this.onWebSocketMsg;
             }
         },
         onClosePlayer: function () {

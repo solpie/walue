@@ -13,7 +13,6 @@ var routes = [
         path: '/setting', name: 'setting',
         components: {default: SettingView, Navbar: Navbar},
     }
-    // {path: '/setting', components: {default: MonitorView, Navbar: Navbar}},
 ];
 
 declare var VueRouter;
