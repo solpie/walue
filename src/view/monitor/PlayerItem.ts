@@ -129,23 +129,6 @@ export var PlayerItemView = {
                 monitorModel.openChatWs(this.roomInfo.chat, (dmkArr)=> {
                     this.dmkArr = dmkArr;
                 });
-                // var wsMap = monitorModel.wsMap;
-                // if (!wsMap[this.roomInfo.chat]) {
-                //     monitorModel.dmkArrMap[this.roomInfo.chat] = "";
-                //     wsMap[this.roomInfo.chat] = new WebSocket(this.roomInfo.chat);
-                //     wsMap[this.roomInfo.chat].binaryType = "arraybuffer";
-                //     wsMap[this.roomInfo.chat].onopen = function (evt) {
-                //         console.log('websocket open');
-                //     };
-                //     wsMap[this.roomInfo.chat].funcArr = [];
-                //     wsMap[this.roomInfo.chat].onmessage = (evt)=> {
-                //         for (var i = 0; i < wsMap[this.roomInfo.chat].funcArr.length; i++) {
-                //             var func = wsMap[this.roomInfo.chat].funcArr[i];
-                //             func(evt);
-                //         }
-                //     }
-                // }
-                // wsMap[this.roomInfo.chat].funcArr.push(this.onWebSocketMsg);
             }
         },
         onClosePlayer: function () {
