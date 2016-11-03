@@ -3,7 +3,7 @@ import {MonitorView} from "./monitor/MonitorView";
 import {SettingView} from "./setting/SettingView";
 //////////////
 ///////////////////
-
+var version = '16.11.3.2';
 var routes = [
     {
         path: '/', name: 'home',

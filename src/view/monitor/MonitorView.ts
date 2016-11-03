@@ -12,7 +12,6 @@ var monitorVersion = '0.10.12.1';
 //////global
 export var menuModel = new MenuModel();
 export var cmd = new Command();
-export var wsMap: any = {};
 ////
 export var $ = require("jquery");
 var isInitWCPlayer = false;
@@ -104,7 +103,7 @@ export var MonitorView = {
                     this.topicArr = actTopic.concat(disActTopic);
                 else
                     this.topicArr = actTopic.concat();
-                menuModel.setTopicArr(this.topicArr);
+                // menuModel.setTopicArr(this.topicArr);
                 console.log('topicInfo', this.topicArr);
             });
         },

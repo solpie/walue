@@ -6,7 +6,7 @@ export class MenuModel {
     menu;
 
     constructor() {
-        // this.buildMenu();
+        this.buildMenu();
     }
 
     buildMenu(topicItem?) {

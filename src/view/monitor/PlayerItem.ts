@@ -1,6 +1,5 @@
 import {packDmk, decodeMsg} from "../../model/DmkInfo";
 import {monitorModel} from "../../model/MonitorModel";
-import {wsMap} from "./MonitorView";
 var $ = require("jquery");
 declare var io: any;
 declare var wjs;
@@ -8,6 +7,7 @@ declare var wjs;
 
 
 export var PlayerItemView = {
+    template: require('./playerItem.html'),
     props: {
         idx: {},
         player: {},
@@ -22,7 +22,9 @@ export var PlayerItemView = {
         shortUrl: {},//websocket url
         roomInfo: {}
     },
-    template: require('./playerItem.html'),
+    watch: {
+        dmkArr: 'onDmkArr'
+    },
     mounted: function () {
         console.log('created player', this.roomInfo.shortUrl);
         // if (this.player) {
@@ -61,6 +63,10 @@ export var PlayerItemView = {
         onCommitInputEnter: function () {
 
         },
+        onDmkArr: function (v) {
+            if (!v && monitorModel.dmkArrMap[this.roomInfo.chat])
+                this.dmkArr = monitorModel.dmkArrMap[this.roomInfo.chat];
+        },
         onSendDmk: function (e) {
             // var socket = io('http://localhost');
             // socket.on('news', function (data) {
@@ -74,6 +80,7 @@ export var PlayerItemView = {
                 // ac = acObj.name;
                 // pw = acObj.pw;
                 // token = acObj.token;
+                var wsMap = monitorModel.wsMap;
                 if (wsMap[this.roomInfo.chat]) {
                     var packMsg = packDmk(this.dmkContent, null);
                     wsMap[this.roomInfo.chat].send(packMsg);
@@ -90,8 +97,10 @@ export var PlayerItemView = {
             console.log("onWebSocketMsg", evt, dmkContent);
             if (!this.dmkArr)
                 this.dmkArr = '';
-            if (dmkContent)
-                this.dmkArr += ":" + dmkContent + '\n';
+            if (dmkContent) {
+                monitorModel.dmkArrMap[this.roomInfo.chat] += ":" + dmkContent + '\n';
+                this.dmkArr = monitorModel.dmkArrMap[this.roomInfo.chat]
+            }
             // for (var i = 0; i < this.dmkArr.length; i++) {
             //     var obj = this.dmkArr[i];
             //
@@ -117,14 +126,26 @@ export var PlayerItemView = {
         },
         initChat: function () {
             if (this.roomInfo.chat) {
-                if (!wsMap[this.roomInfo.chat]) {
-                    wsMap[this.roomInfo.chat] = new WebSocket(this.roomInfo.chat);
-                    wsMap[this.roomInfo.chat].binaryType = "arraybuffer";
-                    wsMap[this.roomInfo.chat].onopen = function (evt) {
-                        console.log('websocket open');
-                    };
-                }
-                wsMap[this.roomInfo.chat].onmessage = this.onWebSocketMsg;
+                monitorModel.openChatWs(this.roomInfo.chat, (dmkArr)=> {
+                    this.dmkArr = dmkArr;
+                });
+                // var wsMap = monitorModel.wsMap;
+                // if (!wsMap[this.roomInfo.chat]) {
+                //     monitorModel.dmkArrMap[this.roomInfo.chat] = "";
+                //     wsMap[this.roomInfo.chat] = new WebSocket(this.roomInfo.chat);
+                //     wsMap[this.roomInfo.chat].binaryType = "arraybuffer";
+                //     wsMap[this.roomInfo.chat].onopen = function (evt) {
+                //         console.log('websocket open');
+                //     };
+                //     wsMap[this.roomInfo.chat].funcArr = [];
+                //     wsMap[this.roomInfo.chat].onmessage = (evt)=> {
+                //         for (var i = 0; i < wsMap[this.roomInfo.chat].funcArr.length; i++) {
+                //             var func = wsMap[this.roomInfo.chat].funcArr[i];
+                //             func(evt);
+                //         }
+                //     }
+                // }
+                // wsMap[this.roomInfo.chat].funcArr.push(this.onWebSocketMsg);
             }
         },
         onClosePlayer: function () {

@@ -1,5 +1,6 @@
 import {TopicInfo} from "./TopicInfo";
 import {RoomInfo} from "./RoomInfo";
+import {decodeMsg} from "./DmkInfo";
 var unirest = require('unirest');
 class SettingModel {
     isShowRecVideo: boolean = false;
@@ -27,13 +28,47 @@ var unzipUpdate = (updateFile)=> {
         }
     });
 }
+
 export class MonitorModel {
     settingModel;
     playerMap;
+    wsMap;
+    dmkArrMap;
 
     constructor() {
         this.settingModel = new SettingModel();
         this.playerMap = {};
+        this.wsMap = {};
+        this.dmkArrMap = {};
+    }
+
+    //连接弹幕服务器
+    openChatWs(chatWsUrl, onMsgCallback) {
+        var wsMap = this.wsMap;
+        if (!wsMap[chatWsUrl]) {
+            monitorModel.dmkArrMap[chatWsUrl] = "";
+            wsMap[chatWsUrl] = new WebSocket(chatWsUrl);
+            wsMap[chatWsUrl].binaryType = "arraybuffer";
+            wsMap[chatWsUrl].onopen = function (evt) {
+                console.log('websocket open');
+            };
+            wsMap[chatWsUrl].funcArr = [onMsgCallback];
+            wsMap[chatWsUrl].onmessage = (evt)=> {
+                var dmkContent = decodeMsg(evt.data);
+                console.log("onWebSocketMsg", evt, dmkContent);
+                if (dmkContent) {
+                    monitorModel.dmkArrMap[chatWsUrl] += ":" + dmkContent + '\n';
+                    for (var i = 0; i < wsMap[chatWsUrl].funcArr.length; i++) {
+                        var func = wsMap[chatWsUrl].funcArr[i];
+                        func(monitorModel.dmkArrMap[chatWsUrl]);
+                    }
+                }
+            };
+        }
+        else {
+            onMsgCallback(monitorModel.dmkArrMap[chatWsUrl]);
+            wsMap[chatWsUrl].funcArr.push(onMsgCallback);
+        }
     }
 
     getTopicLives(topicArr, callback) {
@@ -79,7 +114,7 @@ export class MonitorModel {
                         topicInfo.liveCount = obj.count.live;
                         topicInfo.viewCount = obj.count.view;
                         topicInfo.hasActiveLive = obj.hasActiveLive;
-                        console.log('hasActiveLive', topicInfo.hasActiveLive, topicInfo.id);
+                        // console.log('hasActiveLive', topicInfo.hasActiveLive, topicInfo.id);
                         topicArr.push(topicInfo);
                         // console.log('id', obj.id, 'content:', obj.content);
                     }
@@ -112,11 +147,13 @@ export class MonitorModel {
                         var liveObj = lives[j];
                         roomInfo = new RoomInfo;
                         roomInfo.chat = liveObj.chat;
-                        roomInfo.title = liveObj.topic.content;
+                        roomInfo.title = liveObj.title;
                         roomInfo.mc = liveObj.user.displayName;
                         roomInfo.rtmp = liveObj.playUrl;
                         roomArr.push(roomInfo);
                     }
+                    console.log('get live:', liveObj);
+
                     if (callback)
                         callback(roomArr);
                 }
