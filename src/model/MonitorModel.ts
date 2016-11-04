@@ -130,19 +130,22 @@ export class MonitorModel {
             });
     };
 
-    getLive(topicId, callback?) {
+    getLive(topicId, callback?, cursor?, roomArrPre?) {
         var roomArr = [];
+        if (roomArrPre)
+            roomArr = roomArr.concat(roomArrPre);
         var roomInfo;
         var liveUrl = `https://api.weilutv.com/1/topic/${topicId}/live/live_list`;
-        console.log(liveUrl);
+        console.log(liveUrl, cursor, roomArr.length);
         unirest.post(liveUrl)
             .headers({'Accept': 'application/json', 'Content-Type': 'application/json'})
+            .send({cursor: cursor})
             .end((res2)=> {
                 // console.log(res2.body);
                 if (res2.body.success) {
                     var lives = res2.body.result.lives;
                     var hasMore = res2.body.result.cursor.hasMore;
-                    var cursor = res2.body.result.cursor.cursor;
+                    var cursor = res2.body.result.cursor;
                     for (var j = 0; j < lives.length; j++) {
                         var liveObj = lives[j];
                         roomInfo = new RoomInfo;
@@ -153,8 +156,10 @@ export class MonitorModel {
                         roomArr.push(roomInfo);
                     }
                     console.log('get live:', liveObj);
-
-                    if (callback)
+                    if (hasMore) {
+                        this.getLive(topicId, callback, cursor, roomArr)
+                    }
+                    else if (callback)
                         callback(roomArr);
                 }
                 else throw "get /live_list failed";
@@ -172,7 +177,6 @@ export class MonitorModel {
                 }
                 else throw "error " + apiUrl;
             });
-
         // POST /comment/t123/post
         // {"content": "nihao"}
     }

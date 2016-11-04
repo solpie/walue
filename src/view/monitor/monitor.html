@@ -41,17 +41,19 @@
         </vue>
     </div>
 
-    <div id="roomList" class="collection" style="position: absolute;left: 270px;width: 800px">
-        <li class="collection-item" v-for="(roomInfo, index) in roomArr" >
-            <roomItem :idx="index"
-                      :roomInfo='roomInfo'
-                      :accountArr='accountArr'
-                      :acOptionArr='acOptionArr'
-                      v-on:login="onLogin"
-                      v-on:openRoom="onOpenRoom"
-            >
-            </roomItem>
-        </li>
+    <div style="overflow-y: scroll">
+        <div id="roomList" class="collection" style="position: absolute;left: 270px;width: 800px">
+            <li class="collection-item" v-for="(roomInfo, index) in roomArr" >
+                <roomItem :idx="index"
+                          :roomInfo='roomInfo'
+                          :accountArr='accountArr'
+                          :acOptionArr='acOptionArr'
+                          v-on:login="onLogin"
+                          v-on:openRoom="onOpenRoom"
+                >
+                </roomItem>
+            </li>
+        </div>
     </div>
 </div>
 

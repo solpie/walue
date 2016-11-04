@@ -21,7 +21,7 @@
             <textarea style="height:120px" v-model="dmkArr" readonly="readonly"></textarea>
         </div>
         <div class="row">
-            <input placeholder="ctrl+enter发送弹幕" style="width: 200px" class="DmkInput input-field" @keyup.enter="onInputEnter" v-model="dmkContent">
+            <input placeholder="enter发送弹幕" style="width: 200px" class="DmkInput input-field" @keyup.enter="onInputEnter" v-model="dmkContent">
             <a class="btn-floating" style="width:35px;height: 35px"
                @click="onSendDmk"> <i class="material-icons right">send</i></a>
         </div>
