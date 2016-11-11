@@ -110,14 +110,16 @@ export class MonitorModel {
                         var obj = topics[i];
                         var topicInfo = new TopicInfo();
                         topicInfo.id = obj.id;
-                        topicInfo.topic = obj.content;
+                        topicInfo.topic = obj.title;
                         topicInfo.liveCount = obj.count.live;
+                        topicInfo.videoCount = obj.count.video;
                         topicInfo.viewCount = obj.count.view;
                         topicInfo.hasActiveLive = obj.hasActiveLive;
                         // console.log('hasActiveLive', topicInfo.hasActiveLive, topicInfo.id);
                         topicArr.push(topicInfo);
-                        // console.log('id', obj.id, 'content:', obj.content);
+                        // console.log('topic id', obj.id, obj);
                     }
+                    // console.log("topic", obj);
                     if (hasMore) {
                         this.getTopic(callback, cursor, topicArr);
                     }

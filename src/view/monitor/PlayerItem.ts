@@ -98,22 +98,6 @@ export var PlayerItemView = {
             }
         },
 
-        // onWebSocketMsg: function (evt) {
-        //     var dmkContent = decodeMsg(evt.data);
-        //     console.log("onWebSocketMsg", evt, dmkContent);
-        //     if (!this.dmkArr)
-        //         this.dmkArr = '';
-        //     if (dmkContent) {
-        //         monitorModel.dmkArrMap[this.roomInfo.chat] += ":" + dmkContent + '\n';
-        //         this.dmkArr = monitorModel.dmkArrMap[this.roomInfo.chat]
-        //     }
-        //     // for (var i = 0; i < this.dmkArr.length; i++) {
-        //     //     var obj = this.dmkArr[i];
-        //     //
-        //     // }
-        //     var $textarea = $(this.$el).find("textarea")[0];
-        //     $textarea.scrollTop = $textarea.scrollHeight;
-        // },
         onDmkArrUpdate: function (v) {
             this.dmkArr = v;
             var $textarea = $(this.$el).find("textarea")[0];

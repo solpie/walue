@@ -3,7 +3,9 @@ import {MonitorView} from "./monitor/MonitorView";
 import {SettingView} from "./setting/SettingView";
 //////////////
 ///////////////////
-var version = '16.11.3.2';
+var version = '16.11.11.1';
+// fixed：开四个直播间时候 直播列表连接无法点击
+document.title = "瓦伦 ver " + version;
 var routes = [
     {
         path: '/', name: 'home',

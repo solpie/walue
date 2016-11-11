@@ -41,7 +41,7 @@
         </vue>
     </div>
 
-    <div style="overflow-y: scroll">
+    <div style="overflow-y: scroll;z-index: 999">
         <div id="roomList" class="collection" style="position: absolute;left: 270px;width: 800px">
             <li class="collection-item" v-for="(roomInfo, index) in roomArr" >
                 <roomItem :idx="index"
