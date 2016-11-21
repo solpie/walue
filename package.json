@@ -29,7 +29,7 @@
     "vue-loader": "^9.7.0"
   },
   "scripts": {
-    "app": "npm run server-build&&electron resources/app",
+    "app": "electron resources/app",
     "server": "webpack --watch --progress --profile --colors --display-error-details --display-cached --config webpack.server.js",
     "server-build": "webpack --progress --profile --colors --display-error-details --display-cached --config webpack.server.js",
     "electron-packager": "electron-packager resources/app WeiluTV --ignore=node_modules/electron-* --platform=win32 --arch=x64 --overwrite --ignore=dev-settings --prune"

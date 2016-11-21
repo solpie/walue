@@ -1,11 +1,13 @@
-import {TopicInfo} from "./TopicInfo";
-import {RoomInfo} from "./RoomInfo";
-import {decodeMsg} from "./DmkInfo";
+import { format } from 'path';
+import { AccountInfo } from './AccountInfo';
+import { TopicInfo } from "./TopicInfo";
+import { RoomInfo } from "./RoomInfo";
+import { decodeMsg } from "./DmkInfo";
 var unirest = require('unirest');
 class SettingModel {
     isShowRecVideo: boolean = false;
 }
-var unzipUpdate = (updateFile)=> {
+var unzipUpdate = (updateFile) => {
     var DecompressZip = require('decompress-zip');
     var unzipper = new DecompressZip(updateFile);
 
@@ -28,6 +30,7 @@ var unzipUpdate = (updateFile)=> {
         }
     });
 }
+var accountInfo = new AccountInfo();
 
 export class MonitorModel {
     settingModel;
@@ -40,6 +43,7 @@ export class MonitorModel {
         this.playerMap = {};
         this.wsMap = {};
         this.dmkArrMap = {};
+        this.initLoginUser()
     }
 
     //连接弹幕服务器
@@ -53,7 +57,7 @@ export class MonitorModel {
                 console.log('websocket open');
             };
             wsMap[chatWsUrl].funcArr = [onMsgCallback];
-            wsMap[chatWsUrl].onmessage = (evt)=> {
+            wsMap[chatWsUrl].onmessage = (evt) => {
                 var dmkContent = decodeMsg(evt.data);
                 console.log("onWebSocketMsg", evt, dmkContent);
                 if (dmkContent) {
@@ -72,9 +76,9 @@ export class MonitorModel {
     }
 
     getTopicLives(topicArr, callback) {
-        var for1 = (idx, topicArr)=> {
+        var for1 = (idx, topicArr) => {
             if (idx < topicArr.length) {
-                monitorModel.getLive(topicArr[idx].id, (roomArr)=> {
+                monitorModel.getLive(topicArr[idx].id, (roomArr) => {
                     topicArr[idx].roomArr = roomArr;
                     for (var k = 0; k < roomArr.length; k++) {
                         var roomInfo = roomArr[k];
@@ -97,9 +101,9 @@ export class MonitorModel {
         if (topicArrPre)
             topicArr = topicArr.concat(topicArrPre);
         unirest.post('http://api.weilutv.com/1/topic/list')
-            .headers({'Accept': 'application/json', 'Content-Type': 'application/json'})
-            .send({cursor: cursor})
-            .end((res1)=> {
+            .headers({ 'Accept': 'application/json', 'Content-Type': 'application/json' })
+            .send({ cursor: cursor })
+            .end((res1) => {
                 console.log(res1.body);
                 var topics = res1.body.result.topics;
                 var hasMore = res1.body.result.cursor.hasMore;
@@ -140,9 +144,9 @@ export class MonitorModel {
         var liveUrl = `https://api.weilutv.com/1/topic/${topicId}/live/live_list`;
         console.log(liveUrl, cursor, roomArr.length);
         unirest.post(liveUrl)
-            .headers({'Accept': 'application/json', 'Content-Type': 'application/json'})
-            .send({cursor: cursor})
-            .end((res2)=> {
+            .headers({ 'Accept': 'application/json', 'Content-Type': 'application/json' })
+            .send({ cursor: cursor })
+            .end((res2) => {
                 // console.log(res2.body);
                 if (res2.body.success) {
                     var lives = res2.body.result.lives;
@@ -171,9 +175,9 @@ export class MonitorModel {
     static sendCommit(token, topicId, commit) {
         var apiUrl = `https://api.weilutv.com/comment/t${topicId}/post/`;
         unirest.post(apiUrl)
-            .headers({'Accept': 'application/json', 'Content-Type': 'application/json', token: token})
-            .send({content: commit})
-            .end((res)=> {
+            .headers({ 'Accept': 'application/json', 'Content-Type': 'application/json', token: token })
+            .send({ content: commit })
+            .end((res) => {
                 // console.log(res2.body);
                 if (res.body.success) {
                 }
@@ -187,7 +191,7 @@ export class MonitorModel {
         var updateFile = function (remote, local) {
             var http = require('http');
             var fs = require('fs');
-            var file = fs.createWriteStream(local, {flags: 'w'});
+            var file = fs.createWriteStream(local, { flags: 'w' });
             var request = http.get(remote, function (response) {
                 console.log('update File', remote);
                 alert('更新文件:' + remote);
@@ -210,6 +214,19 @@ export class MonitorModel {
             // updateFile("http://192.168.1.252/static/fonts/material-design-icons/Material-Design-Icons.woff2",
             //     "resources/app/static/fonts/material-design-icons/Material-Design-Icons.woff2");
         }
+    }
+    initLoginUser() {
+        for (var user of accountInfo.userArr) {
+            accountInfo.login(user.name, user.pw)
+        }
+    }
+    getUserArr() {
+        var u = []
+        for (var user of accountInfo.userArr) {
+            if (user.token) 
+                u.push(user)
+        }
+        return u
     }
 }
 export var monitorModel = new MonitorModel();

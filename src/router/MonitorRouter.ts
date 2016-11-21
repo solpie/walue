@@ -17,7 +17,7 @@ monitorRouter.post(`/login`, (req, res) => {
     var ac = param.ac;
     var pw = param.pw;
     accountInfo.login(ac, pw);
-    res.send({accountArr: accountInfo.accountArr});
+    res.send({accountArr: accountInfo.userArr});
 });
 
 monitorRouter.post(`/dmk`, (req, res) => {
@@ -31,7 +31,7 @@ monitorRouter.post(`/dmk`, (req, res) => {
 
 monitorRouter.get('/account', function (req, res) {
     console.log(req);
-    res.send({accountArr: accountInfo.accountArr});
+    res.send({accountArr: accountInfo.userArr});
 });
 
 
@@ -183,6 +183,6 @@ monitorRouter.get('/room', function (req, res) {
     // var roomArr = ['rtmp://huputv-ws-live.arenacdn.com/prod/NvS4rQzyGQDWEJLi_1000',
     //     'rtmp://huputv-ws-live.arenacdn.com/prod/NvS4rQzyGQDWEJLi_1000'];
 
-    res.send({roomArr: roomArr, accountArr: accountInfo.accountArr});
+    res.send({roomArr: roomArr, accountArr: accountInfo.userArr});
 
 });

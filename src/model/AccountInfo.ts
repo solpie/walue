@@ -2,7 +2,7 @@ var unirest = require('unirest');
 
 export class AccountInfo {
 
-    accountArr = [
+    userArr = [
         {name: "20000000003", pw: "vl12450", token: ''},
         {name: "20000000004", pw: "vl12450", token: ''}
     ];
@@ -23,8 +23,8 @@ export class AccountInfo {
 
     _updateToken(name, pw, token) {
         var isExist = false;
-        for (var i = 0; i < this.accountArr.length; i++) {
-            var acObj = this.accountArr[i];
+        for (var i = 0; i < this.userArr.length; i++) {
+            var acObj = this.userArr[i];
             if (acObj.name == name) {
                 acObj.token = token;
                 isExist = true;
@@ -32,7 +32,7 @@ export class AccountInfo {
             }
         }
         if (!isExist) {
-            this.accountArr.push({name: name, pw: pw, token: token});
+            this.userArr.push({name: name, pw: pw, token: token});
         }
     }
 }

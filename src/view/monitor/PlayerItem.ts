@@ -1,5 +1,5 @@
-import {packDmk} from "../../model/DmkInfo";
-import {monitorModel} from "../../model/MonitorModel";
+import { packDmk } from "../../model/DmkInfo";
+import { monitorModel } from "../../model/MonitorModel";
 var $ = require("jquery");
 declare var io: any;
 declare var wjs;
@@ -40,7 +40,7 @@ export var PlayerItemView = {
             var playerId = 'player' + this.idx;
             $($item).attr('id', playerId);
             console.log("player item:", this.idx);
-            // var wjs = require('wcjs-player');
+            // var wjs = require('wcjs-player') ;
             var isRotate = monitorModel.settingModel;
             this.player = new wjs("#" + playerId).addPlayer({
                 autoplay: true,
@@ -55,6 +55,7 @@ export var PlayerItemView = {
             // $(this.$el).off('mouseout', '.wcp-vol-control');
             monitorModel.playerMap[playerId] = this.player;
         },
+    
         onInputEnter: function (e) {
             if (e.key && e.key == "Enter") {
                 // if (e.key && e.key == "Enter" && e.ctrlKey) {
@@ -111,7 +112,7 @@ export var PlayerItemView = {
                 pw = acObj.pw;
                 token = acObj.token;
                 if (!token) {
-                    this.$http.post(`http://127.0.0.1/monitor/login`, {ac: ac, pw: pw}).then((res) => {
+                    this.$http.post(`http://127.0.0.1/monitor/login`, { ac: ac, pw: pw }).then((res) => {
                         console.log(res.body);
                         this.$emit('login', res.body.accountArr);
                     });

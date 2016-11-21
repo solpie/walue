@@ -1,11 +1,11 @@
-import {RoomItemView} from "./RoomItem";
-import {TopicItemView} from "./TopicItem";
-import {descendingProp} from "../../utils/JsFunc";
-import {monitorModel} from "../../model/MonitorModel";
-import {Navbar} from "../navbar/Navbar";
-import {MenuModel} from "../../model/MenuModel";
-import {PlayerItemView} from "./PlayerItem";
-import {Command} from "../../model/Command";
+import { RoomItemView } from "./RoomItem";
+import { TopicItemView } from "./TopicItem";
+import { descendingProp } from "../../utils/JsFunc";
+import { monitorModel } from "../../model/MonitorModel";
+import { Navbar } from "../navbar/Navbar";
+import { MenuModel } from "../../model/MenuModel";
+import { PlayerItemView } from "./PlayerItem";
+import { Command } from "../../model/Command";
 
 
 var monitorVersion = '0.10.12.1';
@@ -43,19 +43,15 @@ export var MonitorView = {
     created: function () {
         console.log('create!', monitorVersion);
         this.vlcPath = process.env['VLC_PLUGIN_PATH'];
+        this.initLoginAcc();
     },
     mounted: function () {
         console.log('mounted!');
         this.isShowRecVideo = monitorModel.settingModel.isShowRecVideo;
         this.getRoomInfo();
         this.getTopicInfo();
-        // $(".dropdown-button").dropdown();
-        // $(document).ready(function(){
-        //     $('.collapsible').collapsible({
-        //         accordion : true // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-        //     });
-        // });
     },
+
     methods: {
         onIsShowRecVideo: function (v) {
             console.log('onIsShowRecVideo', v);
@@ -72,7 +68,7 @@ export var MonitorView = {
         onSelectTopic: function (topicId) {
             this.curTopicId = topicId;
             console.log('onSelectTopic', topicId);
-            monitorModel.getLive(topicId, (roomArr)=> {
+            monitorModel.getLive(topicId, (roomArr) => {
                 this.roomArr = roomArr;
                 for (var i = 0; i < this.roomArr.length; i++) {
                     var roomInfo = this.roomArr[i];
@@ -85,7 +81,7 @@ export var MonitorView = {
             });
         },
         getTopicInfo: function () {
-            monitorModel.getTopic((topicInfoArr)=> {
+            monitorModel.getTopic((topicInfoArr) => {
                 var a = topicInfoArr.sort(descendingProp('liveCount'));
                 var actTopic = [];
                 var disActTopic = [];
@@ -112,17 +108,7 @@ export var MonitorView = {
         },
         getRoomInfo: function () {
         },
-        updateAccountOption: function (accountArr) {
-            this.accountArr = accountArr;
-            this.acOptionArr = [];
-            for (var i = 0; i < accountArr.length; i++) {
-                var acObj = accountArr[i];
-                this.acOptionArr.push({text: acObj.name, value: acObj});
-            }
-        },
-        onAcSelected: function (val) {
-            console.log(val);
-        },
+
         initWCPlayer: function () {
             if (!isInitWCPlayer) {
                 isInitWCPlayer = true;
@@ -131,16 +117,33 @@ export var MonitorView = {
                 });
             }
         },
+        initLoginAcc() {
+            // this.updateAccountOption(monitorModel.getUserArr())
+        },
+        updateAccountOption: function (accountArr) {
+            this.accountArr = accountArr;
+            this.acOptionArr = [];
+            for (var i = 0; i < accountArr.length; i++) {
+                var acObj = accountArr[i];
+                this.acOptionArr.push({ text: acObj.name, value: acObj });
+            }
+            console.log("updateAccountOption", this.acOptionArr)
+        },
         onLogin: function (accountArr) {
             console.log('onLogin', accountArr);
-            this.updateAccountOption(accountArr);
+            // this.updateAccountOption(accountArr);
         },
+        onAcSelected: function (val) {
+            console.log(val);
+        },
+
         onOpenRoom: function (roomInfo) {
             console.log('onOpenRoom', roomInfo);
             if (!this.playerArr)
                 this.playerArr = [];
             this.playerArr.push(roomInfo);
             this.roomArr = [];
+            this.updateAccountOption(monitorModel.getUserArr())
         },
         onRefreshRoom: function () {
             console.log('onRefreshRoom');
